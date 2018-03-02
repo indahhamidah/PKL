@@ -185,9 +185,9 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i> Mahasiswa</a></li>
-            <li><a href="index2.html"><i class="fa fa-circle-o"></i> Lulusan</a></li>
-            <li><a href="index2.html"><i class="fa fa-circle-o"></i> Kegiatan</a></li>
+            <li class="active"><a href="jumlah"><i class="fa fa-circle-o"></i> Mahasiswa</a></li>
+            <li class="active"><a href="lulusan"><i class="fa fa-circle-o"></i> Lulusan</a></li>
+            <li class="active"><a href="kegiatan"><i class="fa fa-circle-o"></i> Kegiatan</a></li>
           </ul>
         </li>
         <li class="treeview">

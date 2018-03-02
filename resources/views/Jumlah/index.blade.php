@@ -1,16 +1,34 @@
+@extends('layouts.app')
+@section('content')
 <html>
   <head>
    <title>Data Akademik FMIPA</title>  
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"> 
+   
   </head>
 <body>
-<div class="container">
-<div class="panel panel-primary">
- <div class="panel-heading">Jumlah Mahasiswa Berdasarkan Tipe
- <button id="btn_add" name="btn_add" class="btn btn-default pull-right">Tambah Data</button>
+
+ <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        MAHASISWA
+      </h1>    
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header">
+            <h3 class="box-title"> Data Jumlah Mahasiswa FMIPA</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+
+ <button id="btn_add" name="btn_add" class="btn btn-default pull-right"><i class="fa fa-plus"></i> Tambah Data</button>
     </div>
       <div class="panel-body"> 
-       <table class="table">
+       <table id="example2" class="table table-bordered table-hover">
         <thead>
           <tr>
             <th>Tipe</th>
@@ -86,9 +104,15 @@
 
   </div>  
 </div>
+</div>
+</div>
+</div>
+</div>
+</section>
     <meta name="_token" content="{!! csrf_token() !!}" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="{{asset('js/ajaxscript.js')}}"></script>
 </body>
 </html>
+@endsection
