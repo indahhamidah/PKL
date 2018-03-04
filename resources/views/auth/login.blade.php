@@ -48,12 +48,12 @@
                                 @endif
                         <span class="focus-input100-1"></span>
                         <span class="focus-input100-2"></span>
-                    </div>
+                            </div>
                         </div>
 
                         <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
 
-                    <div class="wrap-input100 rs1 validate-input" data-validate="Password is required">
+                         <div class="wrap-input100 rs1 validate-input" data-validate="Password is required">
                                 <input id="password" type="password" class="input100" placeholder="Password" name="password" required>
                                 @if ($errors->has('password'))
                                     <span class="help-block">

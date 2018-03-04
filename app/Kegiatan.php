@@ -8,6 +8,6 @@ class Kegiatan extends Model
 {
     public $table = "kegiatan";
     protected $fillable = [
-        'nama_kegiatan', 'tahun_kegiatan'
+        'nama_kegiatan', 'tahun_kegiatan', 'id_departemen'
     ];
 }

@@ -4,20 +4,23 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Jumlah;
+use App\User;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class JumlahController extends Controller
 {
- // public function index()
- //    {
-	// $jumlahs = Jumlah::all();
- //    return view('jumlah.index')->with('jumlahs',$jumlahs);
- //    }
-    
-    public function index()
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    public function index(Request $request)
     {
 
-        $jumlahs = Jumlah::latest()->paginate(10);
-        // dd($penerimaans);
+        // $lulusans = Lulusan::latest()->paginate(10);
+        $id_departemen = $request->user()->id_departemen;
+        $jumlahs = DB::table('jumlahs')->where('id_departemen', $id_departemen)->get();
         return view('jumlah.index',compact('jumlahs'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
@@ -29,8 +32,17 @@ class JumlahController extends Controller
             'jenis_mahasiswa' => 'required',
             'jumlah_mahasiswa' => 'required',
             'tahun' => 'required',
+            // 'id_departemen' => 'required',
         ]);
-        Jumlah::create($request->all());
+        // Jumlah::create($request->all());
+        $jumlahs=new Jumlah;
+        $jumlahs->tipe = $request->tipe;
+        $jumlahs->jenis_mahasiswa = $request->jenis_mahasiswa;
+        $jumlahs->jumlah_mahasiswa = $request->jumlah_mahasiswa;
+        $jumlahs->tahun = $request->tahun;
+        $jumlahs->id_departemen= $request->user()->id_departemen;
+
+        $jumlahs->save();
         return redirect()->route('jumlah.index')
                         ->with('success','Penerimaan created successfully');
     }
@@ -47,6 +59,7 @@ class JumlahController extends Controller
             'jenis_mahasiwa' => 'required',
             'jumlah_mahasiwa' => 'required',
             'tahun' => 'required',
+            // 'id_departemen' => 'required',
         ]);
         $jumlah->update($request->all());
         return redirect()->route('jumlah.index')

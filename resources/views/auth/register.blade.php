@@ -61,6 +61,24 @@
                             </div>
                         </div>
                         <div class="form-group">
+                          <label class="col-sm-4 control-label">Departemen</label>
+                          <div class="col-sm-6">
+                              <select name="id_departemen" class="form-control">
+                                <option>Pilih Departemen</option>
+                                <option value=1>Statistika</option>
+                                <option value=2>Geofisika dan Meteorologi</option>
+                                <option value=3>Biologi</option>
+                                <option value=4>Kimia</option>
+                                <option value=5>Matematika</option>
+                                <option value=6>Ilmu Komputer</option>
+                                <option value=7>Fisika</option>
+                                <option value=8>Biokimia</option>
+                                <option value=9>Aktuaria</option>
+                                <option value=10>MIPA</option>
+                              </select>
+                          </div>
+                        </div>
+                        <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">
                                     Register
