@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Jumlah;
 use App\User;
+use App\Departemen;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
@@ -19,17 +20,20 @@ class JumlahController extends Controller
 
     public function index(Request $request)
     {
-
-        // $lulusans = Lulusan::latest()->paginate(10);
         $id_departemen = $request->user()->id_departemen;
-        if(Auth::User()->id_departemen==10){
-         $jumlahs = DB::table('jumlahs')->get();
-     }
-         else{
-             $jumlahs = DB::table('jumlahs')->where('id_departemen', $id_departemen)->get();
-         }
-        return view('jumlah.index',compact('jumlahs'))
-            ->with('i', (request()->input('page', 1) - 1) * 5);
+        // $id=auth()->user()->id;
+        // $nama_departemen = $request->departemen()->nama_departemen;
+        if(Auth::user()->id_departemen==10){
+            $jumlahs = DB::table('jumlahs')
+                        ->join('departemen', 'id_dept', '=', 'id_departemen')
+                        ->get();
+        }
+        else{
+        $jumlahs = DB::table('jumlahs')
+                        ->join('departemen', 'id_dept', '=', 'id_departemen')
+                        ->where('id_departemen', $id_departemen)->get();
+        }
+        return view('jumlah.index',compact('jumlahs'));
     }
 
     public function store(Request $request)

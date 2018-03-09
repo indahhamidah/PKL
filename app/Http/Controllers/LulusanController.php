@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Lulusan;
 use App\User;
+use App\Departemen;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
@@ -18,17 +19,20 @@ class LulusanController extends Controller
 
     public function index(Request $request)
     {
-
-        // $lulusans = Lulusan::latest()->paginate(10);
         $id_departemen = $request->user()->id_departemen;
-        if(Auth::User()->id_departemen==10){
-         $lulusans = DB::table('lulusans')->get();
-     }
-        else{
-            $lulusans = DB::table('lulusans')->where('id_departemen', $id_departemen)->get();
+
+        if(Auth::user()->id_departemen==10){
+            $lulusans = DB::table('lulusans')
+                            ->join('departemen', 'id_dept', '=', 'id_departemen')
+                            ->get();  
         }
-        return view('lulusan.index',compact('lulusans'))
-            ->with('i', (request()->input('page', 1) - 1) * 5);
+        else{
+        $lulusans = DB::table('lulusans')
+                        ->join('departemen', 'id_dept', '=', 'id_departemen')
+                        ->where('id_departemen', $id_departemen)->get();
+        }
+        return view('lulusan.index',compact('lulusans'));
+            // ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
     public function store(Request $request)

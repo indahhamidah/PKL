@@ -20,14 +20,35 @@
                 <i class="fa fa-plus"></i> <strong>Tambah</strong>
               </button>
               <button type="button" class="btn btn-default pull-left" data-toggle="modal" data-target="#modal-exim">
-                <i class="fa fa-plus"></i> <strong>Import</strong>
+                <i class="fa fa-upload"></i> <strong>Import</strong>
               </button>
 
               <div class="col-md-offset-10">
                 <input class="form-control" id="myInput" type="text" placeholder="Tahun">
                 </div>
-
-              @endif
+            @else
+            <button type="button" class="btn btn-default pull-left">
+              <i class="fa fa-download"></i> <strong>Download</strong>
+            </button>
+            <div class="col-md-offset-10">
+           <input class="form-control" id="myInput" type="text" placeholder="Pilih Departemen">
+           
+              <!-- <select name="id_departemen" class="form-control" id="mySelector">
+                      <option>Pilih Departemen</option>
+                      <option value=1>Statistika</option>
+                      <option value=2>Geofisika dan Meteorologi</option>
+                      <option value=3>Biologi</option>
+                      <option value=4>Kimia</option>
+                      <option value=5>Matematika</option>
+                      <option value=6>Ilmu Komputer</option>
+                      <option value=7>Fisika</option>
+                      <option value=8>Biokimia</option>
+                      <option value=9>Aktuaria</option>
+                      <option value=10>MIPA</option>
+                </select> -->
+           </div>
+          
+           @endif
 
             </div>
             <div class="panel-body"> 
@@ -37,8 +58,11 @@
                   <th>Tipe</th>
                   <th>Jenis Mahasiswa</th>
                   <th>Jumlah Mahasiswa</th>
+                  @if(Auth::user()->id_departemen==10)
+                  <th>Departemen</th>
+                  @endif
                   <th>Tahun</th>
-                  @if(Auth::User()->id_departemen!=10)
+                   @if(Auth::user()->id_departemen!=10)
                   <th>Actions</th>
                   @endif
                 </tr>
@@ -49,10 +73,12 @@
                    <td>{{$jumlah->tipe}}</td>
                    <td>{{$jumlah->jenis_mahasiswa}}</td>
                    <td>{{$jumlah->jumlah_mahasiswa}}</td>
+                   @if(Auth::user()->id_departemen==10)
+                   <td>{{$jumlah->nama_departemen}}</td>
+                   @endif
                    <td>{{$jumlah->tahun}}</td>
-                     @if(Auth::User()->id_departemen!=10)
-                    <td>
-
+                    @if(Auth::user()->id_departemen!=10)
+                   <td>
            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-default{{$jumlah->id_jumlah}}">
                   <strong>Edit</strong>
               </button>
@@ -159,7 +185,7 @@
                <div class="form-group">
                   <div class="modal-footer">
                   
-                  <button type="submit" class="btn btn-primary">Save changes</button>
+                  <button type="submit" class="btn btn-primary">Save</button>
                 </div>
               </div>
          </div>
@@ -200,7 +226,7 @@
                <div class="form-group">
                   <div class="modal-footer">
                 
-                  <button type="submit" class="btn btn-primary">Save Changes</button>
+                  <button type="submit" class="btn btn-primary">Save</button>
                 </div>
               </div>
          </div>

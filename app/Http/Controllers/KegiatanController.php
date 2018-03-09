@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Kegiatan;
 use App\User;
+use App\Departemen;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
@@ -19,15 +20,15 @@ class KegiatanController extends Controller
 
     public function index(Request $request)
     {
+
         // $kegiatan = Kegiatan::latest()->paginate(10);
         $id_departemen = $request->user()->id_departemen;
-        if(Auth::User()->id_departemen==10){
-         $kegiatan = DB::table('kegiatan')->get();
-     }
-        else{
-              $kegiatan = DB::table('kegiatan')->where('id_departemen', $id_departemen)->get();
+        if(Auth::user()->id_departemen==10){
+            $kegiatan = DB::table('kegiatan')->get();  
         }
-       
+        else{
+        $kegiatan = DB::table('kegiatan')->where('id_departemen', $id_departemen)->get();
+        }
         return view('kegiatan.index',compact('kegiatan'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }

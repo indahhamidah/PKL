@@ -21,31 +21,39 @@
           <i class="fa fa-plus"></i> <strong>Tambah</strong>
         </button> 
         <button type="button" class="btn btn-default pull-left" data-toggle="modal" data-target="#modal-exim">
-                <i class="fa fa-plus"></i> <strong>Import</strong>
+                <i class="fa fa-upload"></i> <strong>Import</strong>
               </button>
               
               <div class="col-md-offset-10">
                 <input class="form-control" id="myInput" type="text" placeholder="Tahun">
                 </div>
-        @endif
-      </div>
-      <div class="box-body"> 
-       <table id="example2" class="table table-bordered table-hover">
-        <thead>
-          <tr>
-            <th>Kegiatan</th>
-            <th>Tahun</th>
-             @if(Auth::User()->id_departemen!=10)
-            <th>Actions</th>
+           @else
+              <button type="button" class="btn btn-default pull-left">
+              <i class="fa fa-download"></i> <strong>Download</strong>
+            </button>
+            <div class="col-md-offset-10">
+                <input class="form-control" id="myInput" type="text" placeholder="Tahun">
+                </div>
             @endif
-          </tr>
+            </button> 
+              </div>
+              <div class="box-body"> 
+               <table id="example2" class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th>Kegiatan</th>
+                    <th>Tahun</th>
+                     @if(Auth::user()->id_departemen!=10)
+                      <th>Actions</th>
+                      @endif
+                  </tr>
          </thead>
          <tbody id="kegiatan-list" name="kegiatan-list">
            @foreach ($kegiatan as $kegiatan)
            <tr>
              <td>{{$kegiatan->nama_kegiatan}}</td>
-             <td>{{$kegiatan->tahun_kegiatan}}</td>
-              @if(Auth::User()->id_departemen!=10)
+               <td>{{$kegiatan->tahun_kegiatan}}</td>
+                @if(Auth::user()->id_departemen!=10)
               <td>
 
                   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-default{{$kegiatan->id_kegiatan}}">
@@ -133,7 +141,7 @@
 
                <div class="form-group">
                   <div class="modal-footer">
-                  <button type="submit" class="btn btn-primary">Save changes</button>
+                  <button type="submit" class="btn btn-primary">Save</button>
                 </div>
               </div>
           </div>
@@ -172,7 +180,7 @@
                <div class="form-group">
                   <div class="modal-footer">
                 
-                  <button type="submit" class="btn btn-primary">Save Changes</button>
+                  <button type="submit" class="btn btn-primary">Save</button>
                 </div>
               </div>
          </div>

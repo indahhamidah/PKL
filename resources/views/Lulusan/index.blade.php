@@ -21,12 +21,34 @@
               <i class="fa fa-plus"></i> <strong>Tambah</strong>
             </button>
             <button type="button" class="btn btn-default pull-left" data-toggle="modal" data-target="#modal-exim">
-                <i class="fa fa-plus"></i> <strong>Import</strong>
+                <i class="fa fa-upload"></i> <strong>Import</strong>
               </button>
                <div class="col-md-offset-10">
                 <input class="form-control" id="myInput" type="text" placeholder="Tahun">
                 </div>
+             @else
+              <button type="button" class="btn btn-default pull-left">
+              <i class="fa fa-download"></i> <strong>Download</strong>
+            </button>
+           <div class="col-md-offset-10">
+              <input class="form-control" id="myInput" type="text" placeholder="Pilih Departemen">
+             <!--  <select name="id_departemen" class="form-control right" id="myInput2">
+                      <option>Pilih Departemen</option>
+                      <option value=1>Statistika</option>
+                      <option value=2>Geofisika dan Meteorologi</option>
+                      <option value=3>Biologi</option>
+                      <option value=4>Kimia</option>
+                      <option value=5>Matematika</option>
+                      <option value=6>Ilmu Komputer</option>
+                      <option value=7>Fisika</option>
+                      <option value=8>Biokimia</option>
+                      <option value=9>Aktuaria</option>
+                      <option value=10>MIPA</option>
+                </select> -->
+           </div>
+          
             @endif
+
           </div>
             <div class="panel-body"> 
              <table id="example2" class="table table-bordered table-hover">
@@ -34,12 +56,15 @@
                 <tr>
                   <th>Nama</th>
                   <th>NIM</th>
+                  @if(Auth::user()->id_departemen==10)
+                  <th>Departemen</th>
+                  @endif
                   <th>Tahun Masuk</th>
                   <th>Tahun Lulus</th>
                   <th>Total Bulan Masa Studi</th>
                   <th>Total Tahun Masa Studi</th>
                   <th>IPK</th>
-                   @if(Auth::User()->id_departemen!=10)
+                  @if(Auth::user()->id_departemen!=10)
                   <th>Actions</th>
                   @endif
                 </tr>
@@ -49,14 +74,16 @@
                   <tr id="lulusan{{$lulusan->id_lulusan}}">
                    <td>{{$lulusan->nama}}</td>
                    <td>{{$lulusan->nim}}</td>
+                   @if(Auth::user()->id_departemen==10)
+                   <td>{{$lulusan->nama_departemen}}</td>
+                   @endif
                    <td>{{$lulusan->tahun_masuk}}</td>
                    <td>{{$lulusan->tahun_lulus}}</td>
                    <td>{{$lulusan->total_bulan}}</td>
                    <td>{{$lulusan->total_tahun}}</td>
                    <td>{{$lulusan->ipk}}</td>
-                    @if(Auth::User()->id_departemen!=10)
+                    @if(Auth::user()->id_departemen!=10)
                     <td>
-
 
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-default{{$lulusan->id_lulusan}}">
                   <strong>Edit</strong>
@@ -186,7 +213,7 @@
                   <div class="input-group-addon">
                     <i class="fa fa-calendar"></i>
                   </div>
-                      {!! Form::text('tahun_lulus', null, array('placeholder' => 'Tahun Lulus','class' => 'form-control','id'=>'datepicker')) !!}
+                      {!! Form::text('tahun_lulus', null, array('placeholder' => 'Tahun Lulus','class' => 'form-control','id'=>'datepicker2')) !!}
                     </div>
                   </div>
               </div>
@@ -210,7 +237,7 @@
           </div>
               <div class="form-group">
                   <div class="modal-footer">
-                  <button type="submit" class="btn btn-primary">Save changes</button>
+                  <button type="submit" class="btn btn-primary">Save</button>
                 </div>
               </div>
           </div>
@@ -249,7 +276,7 @@
                <div class="form-group">
                   <div class="modal-footer">
                 
-                  <button type="submit" class="btn btn-primary">Save Changes</button>
+                  <button type="submit" class="btn btn-primary">Save</button>
                 </div>
               </div>
          </div>
