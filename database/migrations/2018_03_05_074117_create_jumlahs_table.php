@@ -14,7 +14,7 @@ class CreateJumlahsTable extends Migration
     public function up()
     {
         Schema::create('jumlahs', function (Blueprint $table) {
-            $table->increments('id');
+            $table->increments('id_jumlah');
             $table->string('tipe');
             $table->text('jenis_mahasiswa');
             $table->text('jumlah_mahasiswa');

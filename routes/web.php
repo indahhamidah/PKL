@@ -20,12 +20,13 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::view('admin/admin', 'admin.admin');
 
-Route::get('/formPenerimaan', function () {
-    return view('formPenerimaan');
-});
 Route::resource('penerimaans','PenerimaanController');
 Auth::routes();
 Route::resource('kegiatan','KegiatanController');
 
 Route::resource('jumlah', 'JumlahController');
 Route::resource('lulusan', 'LulusanController');
+
+Route::post('import', 'JumlahController@jumlahImport')->name('jumlah.import');
+Route::post('import1', 'LulusanController@lulusanImport')->name('lulusan.import');
+Route::post('import2', 'KegiatanController@kegiatanImport')->name('kegiatan.import');

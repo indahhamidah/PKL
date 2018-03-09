@@ -46,31 +46,31 @@
                                         <strong>{{ $errors->first('email') }}</strong>
                                     </span>
                                 @endif
-                        <span class="focus-input100-1"></span>
-                        <span class="focus-input100-2"></span>
+                                <span class="focus-input100-1"></span>
+                                <span class="focus-input100-2"></span>
                             </div>
                         </div>
 
                         <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-
-                         <div class="wrap-input100 rs1 validate-input" data-validate="Password is required">
+                            <div class="wrap-input100 rs1 validate-input" data-validate="Password is required">
                                 <input id="password" type="password" class="input100" placeholder="Password" name="password" required>
                                 @if ($errors->has('password'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('password') }}</strong>
                                     </span>
                                 @endif
-                            <span class="focus-input100-1"></span>
-                            <span class="focus-input100-2"></span>
+                                <span class="focus-input100-1"></span>
+                                <span class="focus-input100-2"></span>
+                            </div>
                         </div>
-                     <div class="container-login100-form-btn m-t-20">
-                        <button class="login100-form-btn">
-                            Sign in
-                        </button>
-                    </div>
-                    <div class="text-center p-t-45 p-b-4">
-                        <span class="txt1">
-                        Copyright <?php echo "&copy;" . date("Y"); ?> Fakultas Matematika dan Ilmu Pengetahuan Alam</div>
+                        <div class="container-login100-form-btn m-t-20">
+                            <button class="login100-form-btn">
+                                Sign in
+                            </button>
+                        </div>
+                        <div class="text-center p-t-45 p-b-4">
+                            <span class="txt1">
+                            Copyright <?php echo "&copy;" . date("Y"); ?> Fakultas Matematika dan Ilmu Pengetahuan Alam</div>
                         </span>
                     </form>
                 </div>

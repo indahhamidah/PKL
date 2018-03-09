@@ -7,6 +7,8 @@ use App\Jumlah;
 use App\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
+use Input;
 
 class JumlahController extends Controller
 {
@@ -20,7 +22,12 @@ class JumlahController extends Controller
 
         // $lulusans = Lulusan::latest()->paginate(10);
         $id_departemen = $request->user()->id_departemen;
-        $jumlahs = DB::table('jumlahs')->where('id_departemen', $id_departemen)->get();
+        if(Auth::User()->id_departemen==10){
+         $jumlahs = DB::table('jumlahs')->get();
+     }
+         else{
+             $jumlahs = DB::table('jumlahs')->where('id_departemen', $id_departemen)->get();
+         }
         return view('jumlah.index',compact('jumlahs'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
@@ -46,31 +53,54 @@ class JumlahController extends Controller
         return redirect()->route('jumlah.index')
                         ->with('success','Penerimaan created successfully');
     }
-     public function edit(Jumlah $member)
+     public function edit($id_jumlah)
     {
-        // dd($member);
-        return view('jumlah.edit',compact('jumlah'));
+        // dd($id_jumlah);
+        return view('jumlah.index',compact('jumlah', 'page'));
+
     }
     
     public function update(Request $request, $member)
     {
+        // dd($request->tipe, $request->jenis_mahasiswa, $request->jumlah_mahasiswa, $request->tahun);
         request()->validate([
             'tipe' => 'required',
-            'jenis_mahasiwa' => 'required',
-            'jumlah_mahasiwa' => 'required',
+            'jenis_mahasiswa' => 'required',
+            'jumlah_mahasiswa' => 'required',
             'tahun' => 'required',
             // 'id_departemen' => 'required',
         ]);
-        $jumlah->update($request->all());
+        $jumlah = Jumlah::find($member);
+        $jumlah->tipe = $request->tipe;
+        $jumlah->jenis_mahasiswa = $request->jenis_mahasiswa;
+        $jumlah->jumlah_mahasiswa = $request->jumlah_mahasiswa;
+        $jumlah->tahun = $request->tahun;
+        $jumlah->save();
         return redirect()->route('jumlah.index')
                         ->with('success','Jumlah updated successfully');
     }
-    public function destroy($id)
+    public function destroy($id_jumlah)
     {
-        Jumlah::destroy($id);
+        // dd($id_jumlah);
+        Jumlah::destroy($id_jumlah);
         return redirect()->route('jumlah.index')
                         ->with('success','Jumlah deleted successfully');
     }
 
-
+    public function jumlahImport(Request $request){
+        if($request->hasFile('import_file')){ 
+        $path = $request->file('import_file')->getRealPath();
+        $data = Excel::load($path, function($reader) {})->get();
+        if(!empty($data) && $data->count()){
+                    foreach ($data as $key => $value) {
+                    $insert[] = ['tipe' => $value->tipe, 'jenis_mahasiswa' => $value->jenis_mahasiswa, 'jumlah_mahasiswa' => $value->jumlah_mahasiswa, 'tahun' => $value->tahun, 'id_departemen' => $request->user()->id_departemen];
+                }
+               if(!empty($insert)){
+                    DB::table('jumlahs')->insert($insert);
+                    
+                }
+            }
+        }
+        return redirect()->route('jumlah.index');
+    }
 }

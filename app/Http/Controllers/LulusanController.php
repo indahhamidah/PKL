@@ -7,6 +7,7 @@ use App\Lulusan;
 use App\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 class LulusanController extends Controller
 {
@@ -20,7 +21,12 @@ class LulusanController extends Controller
 
         // $lulusans = Lulusan::latest()->paginate(10);
         $id_departemen = $request->user()->id_departemen;
-        $lulusans = DB::table('lulusans')->where('id_departemen', $id_departemen)->get();
+        if(Auth::User()->id_departemen==10){
+         $lulusans = DB::table('lulusans')->get();
+     }
+        else{
+            $lulusans = DB::table('lulusans')->where('id_departemen', $id_departemen)->get();
+        }
         return view('lulusan.index',compact('lulusans'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
@@ -52,10 +58,10 @@ class LulusanController extends Controller
         return redirect()->route('lulusan.index')
                         ->with('success','Lulusan created successfully');
     }
-     public function edit(Lulusan $member)
+     public function edit($id_lulusan)
     {
         // dd($member);
-        return view('lulusan.edit',compact('lulusan'));
+        return view('lulusan.index',compact('lulusan'));
     }
     
     public function update(Request $request, $member)
@@ -70,6 +76,7 @@ class LulusanController extends Controller
             'ipk' => 'required',
             // 'id_departemen' => 'required',
         ]);
+        $lulusan = Lulusan::find($member);
         $lulusan->update($request->all());
         return redirect()->route('lulusan.index')
                         ->with('success','Lulusan updated successfully');
@@ -79,6 +86,23 @@ class LulusanController extends Controller
         Lulusan::destroy($id_lulusan);
         return redirect()->route('lulusan.index')
                         ->with('success','Lulusan deleted successfully');
+    }
+
+        public function LulusanImport(Request $request){
+        if($request->hasFile('import_file')){ 
+        $path = $request->file('import_file')->getRealPath();
+        $data = Excel::load($path, function($reader) {})->get();
+        if(!empty($data) && $data->count()){
+                    foreach ($data as $key => $value) {
+                    $insert[] = ['nama' => $value->nama, 'nim' => $value->nim, 'tahun_masuk' => $value->tahun_masuk, 'tahun_lulus' => $value->tahun_lulus, 'total_bulan' =>$value->total_bulan, 'total_tahun' =>$value->total_tahun, 'ipk' =>$value->ipk, 'id_departemen' => $request->user()->id_departemen];
+                }
+               if(!empty($insert)){
+                    DB::table('lulusans')->insert($insert);
+                    
+                }
+            }
+        }
+        return redirect()->route('lulusan.index');
     }
 }
 

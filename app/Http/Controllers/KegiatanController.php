@@ -7,6 +7,7 @@ use App\Kegiatan;
 use App\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 class KegiatanController extends Controller
@@ -18,11 +19,15 @@ class KegiatanController extends Controller
 
     public function index(Request $request)
     {
-
         // $kegiatan = Kegiatan::latest()->paginate(10);
         $id_departemen = $request->user()->id_departemen;
-        $kegiatan = DB::table('kegiatan')->where('id_departemen', $id_departemen)->get();
-
+        if(Auth::User()->id_departemen==10){
+         $kegiatan = DB::table('kegiatan')->get();
+     }
+        else{
+              $kegiatan = DB::table('kegiatan')->where('id_departemen', $id_departemen)->get();
+        }
+       
         return view('kegiatan.index',compact('kegiatan'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
@@ -44,10 +49,10 @@ class KegiatanController extends Controller
         return redirect()->route('kegiatan.index')
                         ->with('success','Kegiatan created successfully');
     }
-     public function edit(Jumlah $member)
+     public function edit($id_kegiatan)
     {
         // dd($member);
-        return view('kegiatan.edit',compact('kegiatan'));
+        return view('kegiatan.index',compact('kegiatan'));
     }
     
     public function update(Request $request, $member)
@@ -58,7 +63,7 @@ class KegiatanController extends Controller
             'id_departemen' => 'required',
         ]);
         // $kegiatan->update($request->all());
-        $kegiatan=new Kegiatan;
+        $kegiatan = Kegiatan::find($member);
         $kegiatan->nama_kegiatan = $request->nama_kegiatan;
         $kegiatan->tahun_kegiatan = $request->tahun_kegiatan;
         $kegiatan->id_departemen= $request->user()->id_departemen;
@@ -74,5 +79,21 @@ class KegiatanController extends Controller
                         ->with('success','Kegiatan deleted successfully');
     }
 
+ public function kegiatanImport(Request $request){
+        if($request->hasFile('import_file')){ 
+        $path = $request->file('import_file')->getRealPath();
+        $data = Excel::load($path, function($reader) {})->get();
+        if(!empty($data) && $data->count()){
+                    foreach ($data as $key => $value) {
+                    $insert[] = ['nama_kegiatan' => $value->nama_kegiatan, 'tahun_kegiatan' => $value->tahun_kegiatan, 'id_departemen' => $request->user()->id_departemen];
+                }
+               if(!empty($insert)){
+                    DB::table('kegiatan')->insert($insert);
+                    
+                }
+            }
+        }
+        return redirect()->route('kegiatan.index');
+    }
 
 }
