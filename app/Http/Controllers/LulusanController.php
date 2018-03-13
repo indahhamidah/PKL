@@ -122,6 +122,22 @@ class LulusanController extends Controller
     }
 
 // nyoba
-    
+ public function getIndexData()
+{
+    $arrStart = explode("/", Input::get('start'));
+        $arrEnd = explode("/", Input::get('end'));
+        $start = Carbon::create($arrStart[2], $arrStart[0], $arrStart[1], 0, 0, 0);
+        $end = Carbon::create($arrEnd[2], $arrEnd[0], $arrEnd[1], 23, 59, 59);
+
+        $orders = Orders::between($start, $end);
+
+return Datatables::of( $orders )
+            ->addColumn( 'action', function ( $orders )
+                {
+                    return '<a href="orderdetails/' . $orders->id . '" class="btn btn-xs btn-primary"><i class="fa fa-truck"></i></a>';
+                }
+            )
+            ->make( TRUE );
+}   
 }
 

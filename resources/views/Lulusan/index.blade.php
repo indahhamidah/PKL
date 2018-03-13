@@ -26,8 +26,17 @@
                <div class="col-md-offset-10">
                 <input class="form-control" id="myInput" type="text" placeholder="Tahun">
                 </div>
+                <br>
                 <!-- date range -->
-              
+                   <div class="col-xs-4">
+                      <div class="input-daterange input-group" id="datepicker">
+                         <input type="text" class="input-sm form-control" name="start" value="{{ Carbon::now()->format('m/d/Y') }}" />
+                          <span class="input-group-addon">to</span>
+                          <input type="text" class="input-sm form-control" name="end" value="{{ Carbon::now()->format('m/d/Y') }}"/>
+                       </div>
+                       <button type="button" id="dateSearch" class="btn btn-sm btn-primary">Search</button>
+                   </div>
+                        
                 <!-- close -->
                   
              @else
@@ -55,7 +64,7 @@
 
           </div>
             <div class="panel-body"> 
-             <table id="orders-table" class="table table-bordered table-hover">
+             <table id="example2" class="table table-bordered table-hover">
               <thead>
                 <tr>
                   <th>Nama</th>
@@ -305,6 +314,41 @@
         </div>
 </section>
 
+<script type="text/javascript">
+  var oTable = $('#example2').DataTable({
+                dom: 'frtBp',
+                buttons: [
+                    {
+                        text: 'Print Selected Orders',
+                        action: function ( e, dt, node, config )
+                              {
+                                  alert( 'You clicked me!' );
+                              }
+                    }
+                ],
+                stateSave: true,
+                paging:     true,
+                pagingType: 'simple_numbers',
+                lengthMenu: [ [ 15, 30, 50, -1 ], [ 15, 30, 50, "All" ] ],
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: '{!! route( 'lulusan.index' ) !!}',
+                        data: function(d) {
+                            d.start = $('input[name=start]').val();
+                            d.end = $('input[name=end]').val();
+                        }
+                    },
+                
+            });
+    $('.input-daterange').datepicker({
+                 autoclose: true,
+                 todayHighlight: true
+            });
 
+            $('#dateSearch').on('click', function() {
+                oTable.draw();
+            });
+</script>
 
 @endsection
