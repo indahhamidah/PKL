@@ -9,6 +9,7 @@ use App\Departemen;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
+use Carbon\Carbon;
 
 class LulusanController extends Controller
 {
@@ -25,13 +26,25 @@ class LulusanController extends Controller
             $lulusans = DB::table('lulusans')
                             ->join('departemen', 'id_dept', '=', 'id_departemen')
                             ->get();  
+            // $selangtahun=DB::table('lulusans')
+            //                 ->wherebetween(whereYear('tahun_lulus', Lulusan::today()),whereYear('tahun_lulus',))
+                            
+            $ratabulan=DB::table('lulusans')->avg('total_bulan');
+            $ratatahun=DB::table('lulusans')->avg('total_tahun');
+            $rataipk=DB::table('lulusans')->avg('ipk');
         }
         else{
         $lulusans = DB::table('lulusans')
                         ->join('departemen', 'id_dept', '=', 'id_departemen')
                         ->where('id_departemen', $id_departemen)->get();
+        $ratabulan=DB::table('lulusans')->join('departemen', 'id_dept', '=', 'id_departemen')
+                                    ->where('id_departemen', $id_departemen)->avg('total_bulan');
+        $ratatahun=DB::table('lulusans')->join('departemen', 'id_dept', '=', 'id_departemen')
+                                    ->where('id_departemen', $id_departemen)->avg('total_tahun');
+        $rataipk=DB::table('lulusans')->join('departemen', 'id_dept', '=', 'id_departemen')
+                                    ->where('id_departemen', $id_departemen)->avg('ipk');
         }
-        return view('lulusan.index',compact('lulusans'));
+        return view('lulusan.index',compact('lulusans','ratabulan','ratatahun','rataipk'));
             // ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
@@ -45,9 +58,8 @@ class LulusanController extends Controller
             'total_bulan' => 'required',
             'total_tahun' => 'required',
             'ipk' => 'required',
-            // 'id_departemen' => 'required',
         ]);
-        // Lulusan::create($request->all());
+        
         $lulusans=new Lulusan;
         $lulusans->nama = $request->nama;
         $lulusans->nim = $request->nim;
@@ -92,13 +104,13 @@ class LulusanController extends Controller
                         ->with('success','Lulusan deleted successfully');
     }
 
-        public function LulusanImport(Request $request){
-        if($request->hasFile('import_file')){ 
-        $path = $request->file('import_file')->getRealPath();
-        $data = Excel::load($path, function($reader) {})->get();
-        if(!empty($data) && $data->count()){
-                    foreach ($data as $key => $value) {
-                    $insert[] = ['nama' => $value->nama, 'nim' => $value->nim, 'tahun_masuk' => $value->tahun_masuk, 'tahun_lulus' => $value->tahun_lulus, 'total_bulan' =>$value->total_bulan, 'total_tahun' =>$value->total_tahun, 'ipk' =>$value->ipk, 'id_departemen' => $request->user()->id_departemen];
+    public function LulusanImport(Request $request){
+    if($request->hasFile('import_file')){ 
+    $path = $request->file('import_file')->getRealPath();
+    $data = Excel::load($path, function($reader) {})->get();
+    if(!empty($data) && $data->count()){
+        foreach ($data as $key => $value) {
+            $insert[] = ['nama' => $value->nama, 'nim' => $value->nim, 'tahun_masuk' => $value->tahun_masuk, 'tahun_lulus' => $value->tahun_lulus, 'total_bulan' =>$value->total_bulan, 'total_tahun' =>$value->total_tahun, 'ipk' =>$value->ipk, 'id_departemen' => $request->user()->id_departemen];
                 }
                if(!empty($insert)){
                     DB::table('lulusans')->insert($insert);
@@ -108,5 +120,8 @@ class LulusanController extends Controller
         }
         return redirect()->route('lulusan.index');
     }
+
+// nyoba
+    
 }
 

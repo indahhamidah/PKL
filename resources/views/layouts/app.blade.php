@@ -33,6 +33,8 @@
   <link rel="stylesheet" href="{{asset('Admin/bower_components/Ionicons/css/ionicons.min.css')}}">
   
 
+  
+
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -80,12 +82,13 @@
                         <li><a href="{{ route('login') }}">Login</a></li>
                         <li><a href="{{ route('register') }}">Register</a></li>
                          @else
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                        <li class="dropdown user user-menu">
+                            <a href="#" class="user-profile dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                            <img src="Admin/dist/img/logo-ipb.jpg" class="user-image" alt="User Image">
                                 {{ Auth::user()->username }} <span class="caret"></span>
                             </a>
 
-                            <ul class="dropdown-menu dropdown-usermenu pull-right" role="menu">
+                            <ul class="dropdown-menu dropdown-usermenu" role="menu">
                                 <li>
                                     <a href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
@@ -200,9 +203,6 @@
       </form> -->
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
-      <div>
-        geser dulu
-      </div>
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">MAIN NAVIGATION</li>
         <li class="active treeview">
@@ -233,7 +233,7 @@
         </li>
         <li>
           <a href="pages/widgets.html">
-            <i class="fa fa-th"></i> <span> Prestasi</span>
+            <i class="fa fa-trophy"></i> <span> Prestasi</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
@@ -339,7 +339,9 @@
 <!-- DataTables -->
 <script src="{{asset('Admin/bower_components/datatables.net/js/jquery.dataTables.min.js')}}"></script>
 <script src="{{asset('Admin/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js')}}"></script>
-
+<!-- search range tgl -->
+  <scrpt src="{{asset('Admin/dist/js/caritgl/jquery-1.12.4.js')}}"></scrpt>
+  <scrpt src="{{asset('Admin/dist/js/caritgl/jquery-1.12.4.min.js')}}"></scrpt>
 
 <script>
   $(function () {
@@ -363,6 +365,8 @@
     $('#datepicker2').datepicker({
       autoclose: true
     })
+    //Date range picker
+    $('#reservation').daterangepicker()
 
  $(document).ready(function(){
       $("#myInput").on("keyup", function() {
@@ -389,6 +393,7 @@ $(document).ready(function(){
         });
       });
     });
+
 </script>
 </body>
 </html>

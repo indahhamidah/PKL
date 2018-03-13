@@ -21,34 +21,40 @@ class JumlahController extends Controller
     public function index(Request $request)
     {
         $id_departemen = $request->user()->id_departemen;
-        // $id=auth()->user()->id;
-        // $nama_departemen = $request->departemen()->nama_departemen;
+
         if(Auth::user()->id_departemen==10){
             $jumlahs = DB::table('jumlahs')
                         ->join('departemen', 'id_dept', '=', 'id_departemen')
+                        ->join('tipe_mahasiswa','id_tipe', '=','id_tipee')
+                        ->join('jenis_mahasiswa', 'id_jenis_mahasiswa', '=', 'id_jenis_mahasiswaa')
                         ->get();
+            $totaljumlah=DB::table('jumlahs')->sum('jumlah_mahasiswa');
         }
         else{
         $jumlahs = DB::table('jumlahs')
                         ->join('departemen', 'id_dept', '=', 'id_departemen')
+                        ->join('tipe_mahasiswa','id_tipe', '=','id_tipee')
+                        ->join('jenis_mahasiswa', 'id_jenis_mahasiswa', '=', 'id_jenis_mahasiswaa')
                         ->where('id_departemen', $id_departemen)->get();
+        $totaljumlah=DB::table('jumlahs')->join('departemen', 'id_dept', '=', 'id_departemen')
+                                    ->where('id_departemen', $id_departemen)->sum('jumlah_mahasiswa');
         }
-        return view('jumlah.index',compact('jumlahs'));
+        return view('jumlah.index',compact('jumlahs', 'totaljumlah'));
     }
 
     public function store(Request $request)
     {
         request()->validate([
-            'tipe' => 'required',
-            'jenis_mahasiswa' => 'required',
+            'id_tipee' => 'required',
+            'id_jenis_mahasiswaa' => 'required',
             'jumlah_mahasiswa' => 'required',
             'tahun' => 'required',
             // 'id_departemen' => 'required',
         ]);
         // Jumlah::create($request->all());
         $jumlahs=new Jumlah;
-        $jumlahs->tipe = $request->tipe;
-        $jumlahs->jenis_mahasiswa = $request->jenis_mahasiswa;
+        $jumlahs->id_tipee = $request->id_tipee;
+        $jumlahs->id_jenis_mahasiswaa = $request->id_jenis_mahasiswaa;
         $jumlahs->jumlah_mahasiswa = $request->jumlah_mahasiswa;
         $jumlahs->tahun = $request->tahun;
         $jumlahs->id_departemen= $request->user()->id_departemen;

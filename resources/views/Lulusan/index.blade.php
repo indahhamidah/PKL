@@ -26,6 +26,10 @@
                <div class="col-md-offset-10">
                 <input class="form-control" id="myInput" type="text" placeholder="Tahun">
                 </div>
+                <!-- date range -->
+              
+                <!-- close -->
+                  
              @else
               <button type="button" class="btn btn-default pull-left">
               <i class="fa fa-download"></i> <strong>Download</strong>
@@ -51,7 +55,7 @@
 
           </div>
             <div class="panel-body"> 
-             <table id="example2" class="table table-bordered table-hover">
+             <table id="orders-table" class="table table-bordered table-hover">
               <thead>
                 <tr>
                   <th>Nama</th>
@@ -166,6 +170,22 @@
                   </div>
                   @endforeach
               </tbody>
+
+              <tfoot>
+                <th>Rata-Rata</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                @if(Auth::user()->id_departemen==10)
+                <th></th>
+                @endif
+                <th><?php echo $ratabulan ?> </th>
+                <th><?php echo $ratatahun ?> </th>
+                <th><?php echo $rataipk ?> </th>
+                @if(Auth::user()->id_departemen!=10)
+                <th></th>
+                @endif
+              </tfoot>
               </table>
              </div>
              </div>
@@ -243,35 +263,33 @@
           </div>
               {!! Form::close() !!}
               </div>
-              </div>
-              
+              </div>       
             </div>
             <!-- /.modal-content -->
           </div>
           <!-- /.modal-dialog -->
         </div>
-
          <!-- import -->
         <div class="modal" id="modal-exim" tabindex="1" aria-hidden="true" data-backdrop="static">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                 <form method="post" action=" {{ route('lulusan.import') }}" class="form-horizontal" data-toggle="validator" enctype="multipart/form-data">
                     {{ csrf_field() }}
-        <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        <span aria-hiddem="true"> &times; </span>
-        </button>
-          <h3 class="modal-title">Import Kelulusan</h3>
-        </div>   
+                  <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hiddem="true"> &times; </span>
+                  </button>
+                    <h3 class="modal-title">Import Kelulusan</h3>
+                  </div>   
 
-             <div class="modal-body">
-                  <div class="form-group">
-                      <label for="file" class="col-sm-2 control-label">Import</label>
-                      <div class="col-sm-10">
-                         <input type="file" id="file" name="import_file" class="form-control" autofocus required>
-                         <span class="help-block with-errors"></span>
-                      </div>
-                  </div> 
+                 <div class="modal-body">
+                      <div class="form-group">
+                          <label for="file" class="col-sm-2 control-label">Import</label>
+                          <div class="col-sm-10">
+                             <input type="file" id="file" name="import_file" class="form-control" autofocus required>
+                             <span class="help-block with-errors"></span>
+                          </div>
+                      </div> 
                    
                <div class="form-group">
                   <div class="modal-footer">
@@ -286,5 +304,7 @@
         </div>
         </div>
 </section>
+
+
 
 @endsection

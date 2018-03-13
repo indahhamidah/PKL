@@ -70,7 +70,7 @@
                <tbody id="jumlahs-list" name="jumlahs-list">
                  @foreach ($jumlahs as $jumlah)
                   <tr>
-                   <td>{{$jumlah->tipe}}</td>
+                   <td>{{$jumlah->nama_tipe}}</td>
                    <td>{{$jumlah->jenis_mahasiswa}}</td>
                    <td>{{$jumlah->jumlah_mahasiswa}}</td>
                    @if(Auth::user()->id_departemen==10)
@@ -79,15 +79,16 @@
                    <td>{{$jumlah->tahun}}</td>
                     @if(Auth::user()->id_departemen!=10)
                    <td>
-           <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-default{{$jumlah->id_jumlah}}">
-                  <strong>Edit</strong>
-              </button>
+                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-default{{$jumlah->id_jumlah}}">
+                          <strong>Edit</strong>
+                      </button>
                   {!! Form::open(['method' => 'DELETE','route' => ['jumlah.destroy', $jumlah->id_jumlah],'style'=>'display:inline']) !!}
                   {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
                   {!! Form::close() !!}
                     </td>
                     @endif
                   </tr>
+
                   <!-- Edit -->
                   <div class="modal fade" id="modal-default{{$jumlah->id_jumlah}}">
                     <div class="modal-dialog">
@@ -100,17 +101,36 @@
                         <div class="modal-body">
                           <div class="box box-info">
                             {!! Form::open(array('route' => ['jumlah.update', $jumlah->id_jumlah],'class'=>'form-horizontal','method'=>'PUT')) !!}
-              <div class="box-body">
-                  <div class="form-group">
-                      <label class="col-xs-12 col-sm-6 col-md-8">Tipe</label>
-                      <div class="col-sm-11">
-                                   {!! Form::text('tipe', $jumlah->tipe, array('placeholder' => 'Tipe','class' => 'form-control')) !!}
+                          <div class="box-body">
+                            <div class="form-group">
+                                <label class="col-xs-12 col-sm-6 col-md-8">Tipe</label>
+                                <div class="col-sm-11">
+                                   
+                                   <select class="form-control" name="id_tipee">
+                          <option value={{ $jumlah->id_tipee }}>{{ $jumlah->nama_tipe }}</option>
+                          <option value=<?php if ($jumlah->id_tipee==1) {echo 2;}  else {echo 1;} ?>><?php if ($jumlah->id_tipee==1) {echo "Program Non-Reguler"; } else {echo "Program Reguler";} ?></option>
+                        </select>
                                 </div>
                               </div> 
                               <div class="form-group">
                                 <label class="col-xs-12 col-sm-6 col-md-8">Jenis Mahasiswa</label>
                                 <div class="col-sm-11">
-                                  {!! Form::text('jenis_mahasiswa', $jumlah->jenis_mahasiswa, array('placeholder' => 'Jenis Mahasiswa','class' => 'form-control')) !!}
+                              
+                                   <select class="form-control" name="id_jenis_mahasiswaa">
+                                    <option value={{ $jumlah->id_jenis_mahasiswaa }}>{{ $jumlah->jenis_mahasiswa }}</option>
+                                    <?php if ($jumlah->id_jenis_mahasiswaa==1) {?>}
+                                    <option value=2>Mahasiswa Baru Transfer</option>
+                                    <option value=3>Total Mahasiswa regular/non-reguler (Student Body)</option>
+                                    <?php ;} 
+                                    elseif ($jumlah->id_jenis_mahasiswaa==2) {?>
+                                    <option value=1>Mahasiswa Baru Bukan Transfer</option>
+                                    <option value=3>Total Mahasiswa regular/non-reguler (Student Body)</option>
+                                    <?php ;} 
+                                    else {?>
+                                    <option value=1>Mahasiswa Baru Bukan Transfer</option>
+                                    <option value=2>Mahasiswa Baru Transfer</option>
+                                    <?php ;} ?>
+                        </select>
                                 </div>
                               </div>
                               <div class="form-group">
@@ -141,6 +161,13 @@
                   </div>
                   @endforeach
               </tbody>
+              <tfoot>
+                <th>Total</th>
+                <th></th>
+                <th><?php echo $totaljumlah ?></th>
+                <th></th>
+                <th></th>
+              </tfoot>
               </table>
              </div>
              </div>
@@ -161,13 +188,20 @@
                   <div class="form-group">
                       <label class="col-sm-2 control-label">Tipe</label>
                       <div class="col-sm-10">
-                         {!! Form::text('tipe', null, array('placeholder' => 'Tipe','class' => 'form-control')) !!}
+                         <select class="form-control" name="id_tipee">
+                          <option value=1>Program Reguler</option>
+                          <option value=2>Program Non-Reguler</option>
+                        </select>
                       </div>
                   </div> 
                    <div class="form-group">
                       <label class="col-sm-2 control-label">Jenis Mahasiswa</label>
-                      <div class="col-sm-10">
-                        {!! Form::text('jenis_mahasiswa', null, array('placeholder' => 'Jenis Mahasiswa','class' => 'form-control')) !!}
+                      <div class="col-sm-10">                        
+                        <select class="form-control" name="id_jenis_mahasiswaa">
+                          <option value=1>Mahasiswa Baru Bukan Transfer</option>
+                          <option value=2>Mahasiswa Baru Transfer</option>
+                          <option value=3>Total Mahasiswa regular/non-reguler (Student Body)</option>
+                        </select>
                     </div>
                   </div>
                   <div class="form-group">

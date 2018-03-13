@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Jumlah extends Model
 {
      protected $table = 'jumlahs';
-     protected $primaryKey = 'id_jumlah';
+     // protected $primaryKey = 'id_jumlah';
      protected $fillable = [
-        'tipe', 'jenis_mahasiswa', 'jumlah_mahasiswa', 'tahun', 'id_departemen'
+        'id_jumlah','id_tipee', 'id_jenis_mahasiswaa', 'jumlah_mahasiswa', 'tahun', 'id_departemen'
          ];
 }
