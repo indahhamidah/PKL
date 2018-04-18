@@ -31,9 +31,9 @@
   <link rel="stylesheet" href="{{asset('Admin/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css')}}">
     <!-- Ionicons -->
   <link rel="stylesheet" href="{{asset('Admin/bower_components/Ionicons/css/ionicons.min.css')}}">
-  
 
-  
+  <link rel="stylesheet" href="{{asset('Admin/bower_components/bootstrap-timepicker/css/bootstrap-datetimepicker.css')}}">
+  <link rel="stylesheet" href="{{asset('Admin/bower_components/bootstrap-timepicker/css/bootstrap-datetimepicker.min.css')}}">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -50,7 +50,7 @@
 
   <header class="main-header">
     <!-- Logo -->
-    <a href="index2.html" class="logo">
+    <a href="home" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>D</b>SI</span>
       <!-- logo for regular state and mobile devices -->
@@ -93,7 +93,7 @@
                                     <a href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
                                                  document.getElementById('logout-form').submit();">
-                                        <i class="fa fa-sign-out pull-left"></i> Logout
+                                        <i class="fa fa-sign-out pull-left"></i> Keluar
                                     </a>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -143,14 +143,9 @@
                 </div>
                 @endif
         @endif
-
         <!-- /top navigation -->
-
-
               <!-- Menu Body -->
-             
           <!-- Control Sidebar Toggle Button -->
-         
         </ul>
       </div>
     </nav>
@@ -170,7 +165,7 @@
           @if (Auth::user()->id_departemen==1) 
           <p> STATISTIKA </p>
           @elseif (Auth::user()->id_departemen==2)
-          <p> Geofisika dan Meteorologi</p>
+          <p>Geofisika dan Meteorologi</p>
           @elseif (Auth::user()->id_departemen==3)
           <p> Biologi</p>
           @elseif (Auth::user()->id_departemen==4)
@@ -188,40 +183,37 @@
           @elseif(Auth::user()->id_departemen==10)
           <p> FMIPA</p>
           @endif
-          <!-- <a href="#"><i class="fa fa-circle text-success"></i> Online</a> -->
         </div>
       </div>
-      <!-- search form -->
-     <!--  <form action="#" method="get" class="sidebar-form">
-        <div class="input-group">
-          <input type="text" name="q" class="form-control" placeholder="Search...">
-          <span class="input-group-btn">
-                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
-                </button>
-              </span>
-        </div>
-      </form> -->
-      <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">MAIN NAVIGATION</li>
-        <li class="active treeview">
+        <!-- buat admin -->
+        @if(Auth::User()->role==2)
+        <li class="active">
+          <a href="pengguna">
+            <i class="fa fa-users"></i> <span> User</span>
+            <span class="pull-right-container">
+            </span>
+          </a>
+        </li>
+        <li class="treeview">
           <a href="#">
-            <i class="fa fa-dashboard"></i> <span> Kemahasiswaan</span>
+            <i class="fa fa-mortar-board"></i> <span> Standar 3</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="active"><a href="jumlah"><i class="fa fa-circle-o"></i> Mahasiswa</a></li>
-            <li><a href="lulusan"><i class="fa fa-circle-o"></i> Lulusan</a></li>
-            <li><a href="kegiatan"><i class="fa fa-circle-o"></i> Kegiatan</a></li>
+            <li class="active"><a href="jumlah"><i class="fa fa-circle-o"></i> Akademik</a></li>
+            <li><a href="lulusan"><i class="fa fa-circle-o"></i> Kelulusan Mahasiswa</a></li>
+            <li><a href="kegiatan"><i class="fa fa-circle-o"></i> Pembinaan Non-akademik</a></li>
           </ul>
         </li>
         <li class="treeview">
           <a href="#">
             <i class="fa fa-files-o"></i>
-            <span> Sumber Daya Manusia</span>
+            <span> Standar 4</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
@@ -233,7 +225,7 @@
         </li>
         <li>
           <a href="pages/widgets.html">
-            <i class="fa fa-trophy"></i> <span> Prestasi</span>
+            <i class="fa fa-trophy"></i> <span> Standar 5</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
@@ -242,7 +234,7 @@
         <li class="treeview">
           <a href="#">
             <i class="fa fa-pie-chart"></i>
-            <span> Pembiayaan</span>
+            <span> Standar 6</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
@@ -259,7 +251,7 @@
         <li class="treeview">
           <a href="#">
             <i class="fa fa-laptop"></i>
-            <span> PPMK</span>
+            <span> Standar 7</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
@@ -270,11 +262,82 @@
             <li><a href="pages/UI/buttons.html"><i class="fa fa-circle-o"></i> Kerjasama</a></li>
           </ul>
         </li>
+        <!-- tutup -->
+        @elseif(Auth::user()->role==3)
+        <li class="active treeview">
+          <a href="#">
+            <i class="fa fa-mortar-board"></i> <span> Standar 3</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li class="active"><a href="jumlah"><i class="fa fa-circle-o"></i> Akademik</a></li>
+            <li><a href="lulusan"><i class="fa fa-circle-o"></i> Kelulusan Mahasiswa</a></li>
+            <li><a href="kegiatan"><i class="fa fa-circle-o"></i> Pembinaan Non-akademik</a></li>
+          </ul>
+        </li>
+        @elseif(Auth::user()->role==4)
+        <li class="active treeview">
+          <a href="#">
+            <i class="fa fa-files-o"></i>
+            <span> Standar 4</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="pages/layout/top-nav.html"><i class="fa fa-circle-o"></i> Dosen Tetap</a></li>
+            <li><a href="pages/layout/boxed.html"><i class="fa fa-circle-o"></i> Tenaga Kependidikan</a></li>
+          </ul>
+        </li>
+        @elseif(Auth::user()->role==3)
+        <li class="active">
+          <a href="pages/widgets.html">
+            <i class="fa fa-trophy"></i> <span> Standar 5</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+        </li>
+        @elseif(Auth::User()->role==6)
+        <li class="active treeview">
+          <a href="#">
+            <i class="fa fa-pie-chart"></i>
+            <span> Standar 6</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="pages/charts/chartjs.html"><i class="fa fa-circle-o"></i> Penerimaan Dana</a></li>
+            <li><a href="pages/charts/morris.html"><i class="fa fa-circle-o"></i> Penggunaan Dana</a></li>
+            <li><a href="pages/charts/flot.html"><i class="fa fa-circle-o"></i> Sarana Tambahan</a></li>
+            <li><a href="pages/charts/inline.html"><i class="fa fa-circle-o"></i> Prasarana Tambahan</a></li>
+            <li><a href="pages/charts/flot.html"><i class="fa fa-circle-o"></i> Perangkat Keras</a></li>
+            <li><a href="pages/charts/inline.html"><i class="fa fa-circle-o"></i> Sistem Informasi</a></li>
+          </ul>
+        </li>
+        @elseif(Auth::user()->role==5)
+        <li class="active treeview">
+          <a href="#">
+            <i class="fa fa-laptop"></i>
+            <span> Standar 7</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="pages/UI/general.html"><i class="fa fa-circle-o"></i> Penelitian</a></li>
+            <li><a href="pages/UI/icons.html"><i class="fa fa-circle-o"></i> Pengabdian</a></li>
+            <li><a href="pages/UI/buttons.html"><i class="fa fa-circle-o"></i> Kerjasama</a></li>
+          </ul>
+        </li>
+        @endif
       </ul>
     </section>
     <!-- /.sidebar -->
   </aside>
-
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -289,16 +352,10 @@
     <strong>Copyright &copy; 2018 <a href="https://adminlte.io">PKL FMIPA</a>.</strong> All rights
     reserved.
   </footer>
-
-  <!-- Control Sidebar -->
-  
-  <!-- /.control-sidebar -->
   <!-- Add the sidebar's background. This div must be placed
        immediately after the control sidebar -->
- 
 </div>
 <!-- ./wrapper -->
-
 <!-- jQuery 3 -->
 <script src="{{asset('Admin/bower_components/jquery/dist/jquery.min.js')}}"></script>
 <!-- jQuery UI 1.11.4 -->
@@ -308,7 +365,8 @@
   $.widget.bridge('uibutton', $.ui.button);
 </script>
 <!-- Bootstrap 3.3.7 -->
-<script src="{{asset('Admin/bower_components/bootstrap/dist/js/bootstrap.min.js')}}"></script>
+<!-- <script src="{{asset('Admin/bower_components/bootstrap/dist/js/bootstrap.min.js')}}"></script> -->
+<script src="{{asset('Admin/bower_components/bootstrap-timepicker/js/bootstrap.min.js')}}"></script>
 <!-- Morris.js charts -->
 <script src="{{asset('Admin/bower_components/raphael/raphael.min.js')}}"></script>
 <script src="{{asset('Admin/bower_components/morris.js/morris.min.js')}}"></script>
@@ -339,9 +397,94 @@
 <!-- DataTables -->
 <script src="{{asset('Admin/bower_components/datatables.net/js/jquery.dataTables.min.js')}}"></script>
 <script src="{{asset('Admin/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js')}}"></script>
-<!-- search range tgl -->
-  <scrpt src="{{asset('Admin/dist/js/caritgl/jquery-1.12.4.js')}}"></scrpt>
-  <scrpt src="{{asset('Admin/dist/js/caritgl/jquery-1.12.4.min.js')}}"></scrpt>
+
+
+<script src="{{asset('Admin/bower_components/moment/min/moment-with-locales.js')}}"></script>
+<script src="{{asset('Admin/bower_components/bootstrap-timepicker/js/bootstrap-datetimepicker.js')}}"></script>
+<!-- <script src="{{asset('Admin/bower_components/bootstrap-timepicker/js/jquery-1.11.3.min.js')}}"></script> -->
+
+<!-- <script src="{{asset('Admin/bower_components/bootstrap-timepicker/js/bootstrap-datetimepicker.min.js')}}"></script> -->
+
+
+<!-- hitung rata2 bulan dan tahun di tambah-->
+<script>
+$(function() { 
+  $('#tgl1').datetimepicker({
+   locale:'id',
+   format:'YYYY-MM-DD'
+   });
+   
+  $('#tgl2').datetimepicker({
+   useCurrent: false,
+   locale:'id',
+   format:'YYYY-MM-DD'
+   });
+   
+   $('#tgl1').on("dp.change", function(e) {
+    $('#tgl2').data("DateTimePicker").minDate(e.date);
+    CalcDiff()
+  });
+  
+   $('#tgl2').on("dp.change", function(e) {
+    $('#tgl1').data("DateTimePicker").maxDate(e.date);
+      CalcDiff()
+   });
+  
+});
+
+function CalcDiff()
+{
+    var a=$('#tgl1').data("DateTimePicker").date();
+    var b=$('#tgl2').data("DateTimePicker").date();
+        var timeDiff=0
+         if (b) {
+                timeDiff = (b - a) / 1000;
+            }
+     
+     $('#selisih').val((timeDiff/(86400)/30).toFixed(2))
+     $('#selisihthn').val((timeDiff/(86400)/30/12).toFixed(2))   
+}
+</script>
+
+<!-- hitung rata2 bulan dan tahun di fungsi edit -->
+<script>
+$(function() { 
+  $('#tgl3').datetimepicker({
+   locale:'id',
+   format:'YYYY-MM-DD'
+   });
+   
+  $('#tgl4').datetimepicker({
+   useCurrent: false,
+   locale:'id',
+   format:'YYYY-MM-DD'
+   });
+   
+   $('#tgl3').on("dp.change", function(e) {
+    $('#tgl4').data("DateTimePicker").minDate(e.date);
+    CalcDiff2()
+  });
+  
+   $('#tgl4').on("dp.change", function(e) {
+    $('#tgl3').data("DateTimePicker").maxDate(e.date);
+      CalcDiff2()
+   });
+  
+});
+
+function CalcDiff2()
+{
+    var a2=$('#tgl3').data("DateTimePicker").date();
+    var b2=$('#tgl4').data("DateTimePicker").date();
+        var timeDiff2=0
+         if (b2) {
+                timeDiff2 = (b2 - a2) / 1000;
+            }
+     
+     $('#ratabln').val((timeDiff2/(86400)/30).toFixed(2))
+     $('#ratathn').val((timeDiff2/(86400)/30/12).toFixed(2))   
+}
+</script>
 
 <script>
   $(function () {
@@ -352,7 +495,10 @@
       'searching'   : false,
       'ordering'    : true,
       'info'        : true,
-      'autoWidth'   : false
+      'autoWidth'   : false,
+      'scrollX'     : true,
+      'iDisplayLength':20
+
     })
   })
 
@@ -395,5 +541,6 @@ $(document).ready(function(){
     });
 
 </script>
+
 </body>
 </html>

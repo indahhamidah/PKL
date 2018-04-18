@@ -4,11 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Jumlah extends Model
-{
+Class Jumlah extends Model{
+
      protected $table = 'jumlahs';
-     // protected $primaryKey = 'id_jumlah';
+     protected $primaryKey = 'id_jumlah';
      protected $fillable = [
-        'id_jumlah','id_tipee', 'id_jenis_mahasiswaa', 'jumlah_mahasiswa', 'tahun', 'id_departemen'
+       'mbt_reguler', 'mt_reguler', 'total_reguler', 'mbt_nonreguler', 'mt_nonreguler', 'total_nonreguler', 'tahun'
          ];
 }

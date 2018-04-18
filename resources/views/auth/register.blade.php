@@ -100,6 +100,20 @@
                           </div>
                         </div>
                         <div class="form-group">
+                          <label class="col-sm-4 control-label">Jabatan</label>
+                          <div class="col-sm-6">
+                              <select name="role" class="form-control">
+                                <option>Pilih Jabatan</option>
+                                <option value=1>SuperAdmin</option>
+                                <option value=2>Admin</option>
+                                <option value=3>Ketua Program Studi</option>
+                                <option value=4>Ketua Tata Usaha Departemen</option>
+                                <option value=5>Sekretaris Departemen</option>
+                                <option value=6>Sekretaris Program Studi</option>
+                              </select>
+                          </div>
+                        </div>
+                        <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">
                                     Register

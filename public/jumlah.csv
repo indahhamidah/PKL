@@ -1,0 +1,15 @@
+mbt_reguler, mt_reguler, total_reguler, mbt_nonreguler, mt_nonreguler, total_nonreguler, tahun;
+2,0,4,0,0,0,2020;
+;
+;
+;
+;
+;
+;
+Ket;Keterangan
+mbt_reguler;Mahasiswa baru bukan transfer untuk tipe program reguler
+mt_reguler;Mahasiswa baru transfer untuk tipe program reguler
+total_reguler;Total Mahasiswa regular (Student Body)
+mbt_nonreguler;Mahasiswa baru bukan transfer untuk tipe program non-reguler
+mt_reguler;Mahasiswa baru transfer untuk tipe program non-reguler
+total_nonreguler;Total Mahasiswa non-reguler (Student Body)

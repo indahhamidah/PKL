@@ -165,6 +165,8 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
+        // Codedge\Fpdf\FpdfServiceProvider::class,
 
 
         /*
@@ -233,7 +235,9 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'Carbon' =>Illuminate\Support\Carbon::class,
-
+        'PDF' => Barryvdh\DomPDF\Facade::class,
+        // 'Fpdf' => Codedge\Fpdf\Facades\Fpdf::class,
+        'Rule'=>Illuminate\Validation\Rule::class,
     ],
 
 ];
