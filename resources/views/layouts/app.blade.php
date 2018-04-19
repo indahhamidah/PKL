@@ -277,6 +277,14 @@
             <li><a href="kegiatan"><i class="fa fa-circle-o"></i> Pembinaan Non-akademik</a></li>
           </ul>
         </li>
+        <!-- <li class="active">
+          <a href="pages/widgets.html">
+            <i class="fa fa-trophy"></i> <span> Standar 5</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+        </li> -->
         @elseif(Auth::user()->role==4)
         <li class="active treeview">
           <a href="#">
@@ -290,15 +298,6 @@
             <li><a href="pages/layout/top-nav.html"><i class="fa fa-circle-o"></i> Dosen Tetap</a></li>
             <li><a href="pages/layout/boxed.html"><i class="fa fa-circle-o"></i> Tenaga Kependidikan</a></li>
           </ul>
-        </li>
-        @elseif(Auth::user()->role==3)
-        <li class="active">
-          <a href="pages/widgets.html">
-            <i class="fa fa-trophy"></i> <span> Standar 5</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
         </li>
         @elseif(Auth::User()->role==6)
         <li class="active treeview">
@@ -539,7 +538,14 @@ $(document).ready(function(){
         });
       });
     });
-
+$(document).ready(function(){
+      $("#myInput").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#pengguna-list tr").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      });
+    });
 </script>
 
 </body>

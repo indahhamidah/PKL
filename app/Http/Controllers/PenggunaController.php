@@ -8,7 +8,8 @@ use App\User;
 use App\Departemen;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Validator;
+// use Illuminate\Validation\Rule;
 
 class PenggunaController extends Controller
 {
@@ -23,9 +24,21 @@ class PenggunaController extends Controller
         $user=DB::table('users')
                 ->join('departemen','id_dept','id_departemen')
         		->where('id_departemen',$id_departemen)
+                ->orderBy('name','asc')
                 ->get();
         
         return view('auth/user', compact('user'));
+    }
+
+    public function validator(array $request)
+    {
+        return Validator::make($request, [
+            'name' => 'required|string|max:255',
+            'username' => 'required|string|max:50|unique:users',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6|confirmed',
+            'id_departemen' => 'required|integer|max:11',
+        ]);
     }
 
     public function create()
@@ -36,15 +49,6 @@ class PenggunaController extends Controller
     
     public function store(Request $request)
     {
-        // request()->validate([
-        //     'name' => 'required',
-        //     'username' => 'required|unique:users',
-        //     'email' => 'required|unique:users',
-        //     'password' => 'required',
-        //     'role' => 'required',
-        //     'id_departemen' => 'required',
-        // ]);
-
         $Auth=Auth::user();
         $user=new User;
         $user->name = $request->name;
@@ -72,7 +76,13 @@ class PenggunaController extends Controller
     //     $user = User::find($id);
     //     return view('auth/user',compact('user'));
     // }
+    // public function show($id)
+    // {
+    //     // $user = User::findOrFail($id);
+    //     // dd($user->role);
 
+    //     // return view('auth/user', ['user' => $user]);
+    // }
     public function edit($id)
     {
         return view('auth/user');
@@ -81,14 +91,6 @@ class PenggunaController extends Controller
     public function update(Request $request, $member)
     {
         $user = User::find($member);
-        request()->validate([
-            'name' => 'required',
-            'username' => 'required|unique:users',
-            'email' => 'required|unique:users',
-            'password' => 'required',
-            'role' => 'required',
-            'id_departemen' => 'required',
-        ]);
         $Auth=Auth::user();
         $user->name = $request->name;
         $user->username = $request->username;
@@ -97,8 +99,7 @@ class PenggunaController extends Controller
         $user->role = $request->role;
         $user->id_departemen= $Auth->id_departemen;
         $user->save();
-
-        
+        // dd($user);
         // $user->update($request->all());
         return redirect()->route('pengguna.index')
                         ->with('success','Pengguna updated successfully');

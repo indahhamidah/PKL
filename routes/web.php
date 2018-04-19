@@ -20,8 +20,6 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::view('admin/admin', 'admin.admin');
 
-
-
 Route::resource('kegiatan','KegiatanController');
 Route::resource('jumlah', 'JumlahController');
 Route::resource('lulusan', 'LulusanController');
@@ -39,18 +37,12 @@ Route::get("download","JumlahController@jumlahDownload")->name('jumlah.download'
 Route::get("download1","LulusanController@lulusanDownload")->name('lulusan.download');
 Route::get("download2","KegiatanController@kegiatanDownload")->name('kegiatan.download');
 
-// Route::post('cari_jumlah', 'JumlahController@cari')->name('jumlah.cari');
-Route::post('cari_lulusan', 'LulusanController@cari')->name('lulusan.cari');
-// Route::post('cari_kegiatan', 'KegiatanController@cari')->name('kegiatan.cari');
-// Route::post("cariTahun", "JumlahController@cariTahun");
-
-
 Route::get('jumlahexcel','JumlahController@exceljumlah')->name('jumlah.jumlahexcel');
 
 Route::post("cariTahun", "JumlahController@cariTahun");
 Route::post("cariTahun1", "LulusanController@cariTahun1")->name('lulusan.cariTahun');
 Route::post("cariTahun1", "JumlahController@cariTahun2")->name('kegiatan.cariTahun');
-
+Route::post('cari_lulusan', 'LulusanController@cari')->name('lulusan.cari');
 Route::post("cari", "JumlahController@cari");
 
 //pdf 
@@ -73,6 +65,5 @@ Route::get('/templete6', 'HomeController@csv2');
 
 Route::get("pengguna", "PenggunaController@create");
 Route::post("pengguna", "PenggunaController@store");
-Route::get("pengguna", "PenggunaController@update");
-Route::post("pengguna", "PenggunaController@update");
+Route::post("pengguna/{id}", "PenggunaController@update");
 Route::resource('pengguna', 'PenggunaController');

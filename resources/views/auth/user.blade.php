@@ -23,32 +23,29 @@
                 <input class="form-control" id="myInput" type="text" placeholder="Cari...">
               </div> 
             </div>
-            <!-- alert sukses dan eror -->
-            @if(Session::has('message'))
-              <div class="container">
-                <div class="row">
-                  <div class="col-sm-4 col-md-3">
-                    <div class="alert alert-warning">
-                      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
-                        ×</button>
-                       <span class="glyphicon glyphicon-ok"></span>{{ Session::get('message') }}
-                    </div>
-                  </div>
+           <!-- alert sukses dan eror -->
+          <?php if(Session::has('success')): ?>
+            <div class="col-md-4">
+              <div class="alert alert-success">
+                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                  <i class="icon fa fa-check"></i><strong>Berhasil!</strong> <?php echo Session::get('message', ''); ?>
+              </div>
+              </div>
+          <?php endif;?>
+          <?php if (count($errors) > 0):?>
+             <div class="col-md-4">
+                <div class="alert alert-danger" role="alert">
+                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <i class="icon fa fa-warning"></i><strong>Data yang Anda masukkan salah!</strong>
+                        <ul>
+                            @foreach($errors as $error)
+                                <li>  {{ $error }} </li>
+                            @endforeach
+                        </ul>
                 </div>
               </div>
-           @elseif(Session::has('message2'))
-              <div class="container">
-                <div class="row">
-                  <div class="col-sm-5 col-md-4">
-                    <div class="alert alert-success">
-                      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
-                        ×</button>
-                      <span class="glyphicon glyphicon-ok"></span>{{ Session::get('message2') }}
-                    </div>
-                  </div>
-                </div>
-              </div>
-          @endif
+          <?php
+          endif; ?>
           <!-- tutup -->
             <div class="box-body"> 
               <table id="example2" class="table table-bordered table-hover">
@@ -62,34 +59,36 @@
                     <th>Actions</th>
                   </tr>
                 </thead>
-              <tbody>
+              <tbody id="pengguna-list" name="pengguna-list">
                 <?php $no = 0;?>
                 @foreach ($user as $pengguna)
                 <?php $no++; ?>
                 <tr>
-                <td>{{$no}}</td>
-                <td>{{$pengguna->name}}</td>
-                <td>{{$pengguna->username}}</td>
-                <td>{{$pengguna->email}}</td>
-                @if($pengguna->role==3)
-                <td>Ketua Program Studi</td>
-                @elseif($pengguna->role==4)
-                <td>Ketua Tata Usaha Departemen</td>
-                @elseif($pengguna->role==5)
-                <td>Sekretaris Departemen</td>
-                @elseif($pengguna->role==6)
-                <td>Sekretaris Program Studi</td>
-                @else
-                <td></td>
-                @endif
-                <td>
+                  <td>{{$no}}</td>
+                  <td>{{$pengguna->name}}</td>
+                  <td>{{$pengguna->username}}</td>
+                  <td>{{$pengguna->email}}</td>
+                  @if($pengguna->role==2)
+                  <td>Ketua Tata Usaha Departemen</td>
+                  @elseif($pengguna->role==3)
+                  <td>Ketua Program Studi</td>
+                  @elseif($pengguna->role==4)
+                  <td>Ketua Tata Usaha Departemen</td>
+                  @elseif($pengguna->role==5)
+                  <td>Sekretaris Departemen</td>
+                  @elseif($pengguna->role==6)
+                  <td>Sekretaris Program Studi</td>
+                  @else
+                  <td></td>
+                  @endif
+                  <td>
                   <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#edit_user{{$pengguna->id}}">
-                  <strong>Ubah</strong>
+                  <span>Ubah</span>
                   </button>
                     {!! Form::open(['method' => 'DELETE','route' => ['pengguna.destroy', $pengguna->id],'style'=>'display:inline']) !!}
                     {!! Form::submit('Hapus', ['class' => 'btn btn-danger btn-sm']) !!}
                     {!! Form::close() !!}
-                </td>
+                  </td>
               </tr>
               <!-- Edit -->
         <div class="modal fade" id="edit_user{{$pengguna->id}}">
@@ -103,8 +102,8 @@
               <div class="modal-body">
                 <div class="box box-info">
                   <div class="panel-body">
-                 <form class="form-horizontal" method="GET" action="{{ route('pengguna.update', $pengguna->id) }}">
-                  <!-- {{ csrf_field() }} -->
+                 <form class="form-horizontal" method="POST" action="{{ route('pengguna.update', $pengguna->id) }}">
+                   {{ csrf_field() }}
                         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                             <label for="name" class="col-md-4 control-label">Name</label>
                             <div class="col-md-6">
@@ -298,7 +297,6 @@
           </div>
           <!-- /.modal-dialog -->
         
-
 </section>
 
 @endsection

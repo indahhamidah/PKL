@@ -100,10 +100,10 @@
                           </div>
                         </div>
                         <div class="form-group">
-                          <label class="col-sm-4 control-label">Jabatan</label>
+                          <label class="col-sm-4 control-label">Role</label>
                           <div class="col-sm-6">
                               <select name="role" class="form-control">
-                                <option>Pilih Jabatan</option>
+                                <option>Pilih Role</option>
                                 <option value=1>SuperAdmin</option>
                                 <option value=2>Admin</option>
                                 <option value=3>Ketua Program Studi</option>
