@@ -39,8 +39,8 @@ class KegiatanController extends Controller
               ->orderBy('tahun_kegiatan','desc')
               ->get();
         }
-       
-        return view('kegiatan/index',compact('kegiatan'))
+        $dept=DB::table('departemen')->where('id_dept', $id_departemen)->get();
+        return view('kegiatan/index',compact('kegiatan','dept'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
@@ -182,7 +182,7 @@ public function kegiatanExport(Request $request)
         }
  
         header('Content-Type: application/xls');
-        header('Content-Disposition: attachment; filename=Laporan Kegiatan Non-Akademik '.$keg[0]->nama_departemen .'.xls');
+        header('Content-Disposition: attachment; filename=Laporan_Pembinaan_Non-Akademik '.$keg[0]->nama_departemen .'.xls');
         echo $kegData;
     }
     public function excelKegiatan()
@@ -217,7 +217,7 @@ public function kegiatanExport(Request $request)
         }
  
         header('Content-Type: application/xls');
-        header('Content-Disposition: attachment; filename=Data Kegiatan Non-Akademik.xls');
+        header('Content-Disposition: attachment; filename=Data Pembinaan Non-Akademik.xls');
         echo $kegData;
     }
 

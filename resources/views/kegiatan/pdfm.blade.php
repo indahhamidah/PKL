@@ -9,8 +9,8 @@
     <table cellspacing="0" >
 
             <tr>  
-                <th align=left valign=top>Tabel 3.3</th>
-                <td colspan="13">Data pembinaan non-akademik yang diselenggarakan di level FMIPA baik oleh Fakultas maupun Organisasi Kemahasiswaan tingkat FMIPA</td>
+                <th align=left valign=top></th>
+                <td colspan="13"><strong>Tabel 3.3</strong> Data pembinaan non-akademik yang diselenggarakan di level FMIPA baik oleh Fakultas maupun Organisasi Kemahasiswaan tingkat FMIPA</td>
                 <tr>
                   <th></th>
             <th width="50px" colspan="1" style="border:1px solid #000;text-align: center; border-width: thin; background-color:#daeef3;" style="text-align: center;"><p style="font-size:16px"><font face="Times New Rowman" >No</font></p></th>

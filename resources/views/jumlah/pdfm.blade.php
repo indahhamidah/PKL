@@ -5,8 +5,8 @@
 </head>
 <table cellspacing="0">
            <tr>
-            <th colspan="1" align=left valign=top><font face="Times New Rowman" >Tabel 3.1</font></th>
-             <th colspan="12" style="text-align: left"><font face="Times New Rowman" >Jumlah Mahasiswa FMIPA tahun akademik <?php echo Carbon::now()->startOfYear()->subYear(1)->format('Y') ?>/<?php echo Carbon::now()->startOfYear()->format('Y') ?> menurut Tipe Program dan Jenis Mahasiswa per Program Studi</font></th>
+            <th colspan="1" align=left valign=top><font face="Times New Rowman" ></font></th>
+             <th colspan="12" style="text-align: left"><font face="Times New Rowman" ><strong>Tabel 3.1</strong> Jumlah Mahasiswa FMIPA tahun akademik <?php echo Carbon::now()->startOfYear()->subYear(1)->format('Y') ?>/<?php echo Carbon::now()->startOfYear()->format('Y') ?> menurut Tipe Program dan Jenis Mahasiswa per Program Studi</font></th>
            </tr>
            <tr>
            <th></th>

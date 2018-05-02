@@ -9,8 +9,8 @@ table, th, td {
 
  <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>
-      KELULUSAN MAHASISWA
+      <h1 style="text-transform:uppercase">
+      KELULUSAN MAHASISWA @if(Auth::User()->id_departemen==10) FMIPA IPB @elseif(Auth::User()->id_departemen!=10) program studi {{$dept[0]->nama_departemen}} @endif
       </h1>
     </section>
 
@@ -39,7 +39,7 @@ table, th, td {
              @elseif(Auth::User()->role==2)
               <button type="button" class="btn btn-primary pull-left" style="margin-right: 10px" data-toggle="modal" data-target="#modal">
               <i class="fa fa-download"></i> <span> Download</span>
-            </button>
+              </button>
             @endif
             @else
               <button type="button" class="btn btn-primary pull-left" style="margin-right: 10px" data-toggle="modal" data-target="#modalReport">
@@ -47,7 +47,6 @@ table, th, td {
               </button>
                 <!-- date range -->
                 
-
                 <!-- close -->
               <div class="col-md-offset-10">
                 <input class="form-control" id="myInput" type="text" placeholder="Cari...">
@@ -56,51 +55,49 @@ table, th, td {
               
             <!-- filter dept -->
             <form id="id_lulusan" class="form-horizontal" role="form" method="POST" action="{{ 'cari_lulusan' }}">
-                      <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                      <div class="form-group">
-                          <label class="col-md-4 control-label">Program Studi</label>
-                          <div class="col-md-4 ">
-                              <select class="form-control" name="idDept">
-                                  @foreach ($listdept as $listdepts)
-                                  <option value="{{$listdepts->id_dept}}"> {{$listdepts->nama_departemen}}</option>
-                                  @endforeach
-                              </select>
-                              
-                              <small class="help-block"></small>
-                          </div>
-                          <div class="form-group">
-                              <div class="col-md-2 ">
-                                  <button type="submit" class="btn btn-flat btn-social btn-dropbox" id="button-reg">
-                                    <i class="fa  fa-hand-o-left"></i>  Pilih  
-                                  </button>
-                              </div>
-                          </div>
+              <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                <div class="form-group">
+                  <label class="col-md-4 control-label">Program Studi</label>
+                    <div class="col-md-4 ">
+                      <select class="form-control" name="idDept" style="margin-left: 30px">
+                        @foreach ($listdept as $listdepts)
+                        <option value="{{$listdepts->id_dept}}"> {{$listdepts->nama_departemen}}</option>
+                        @endforeach
+                      </select> 
+                        <small class="help-block"></small>
+                    </div>
+                    <div class="form-group">
+                      <div class="col-md-2 ">
+                        <button type="submit" class="btn btn-flat btn-social btn-dropbox" id="button-reg">
+                          <i class="fa fa-hand-o-left"></i>  Pilih  
+                        </button>
                       </div>
-                      </form>
-
+                    </div>
+                </div>
+            </form>
             @endif
           </div>
           <!-- alert sukses dan eror -->
           <?php if(Session::has('success')): ?>
-            <div class="col-md-4">
-              <div class="alert alert-success">
-                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                  <i class="icon fa fa-check"></i><strong>Berhasil!</strong> <?php echo Session::get('message', ''); ?>
-              </div>
-              </div>
+          <div class="col-md-4">
+            <div class="alert alert-success">
+              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+               <i class="icon fa fa-check"></i><strong>Berhasil!</strong> <?php echo Session::get('message', ''); ?>
+            </div>
+            </div>
           <?php endif;?>
           <?php if (count($errors) > 0):?>
-             <div class="col-md-4">
-                <div class="alert alert-danger" role="alert">
-                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    <i class="icon fa fa-warning"></i><strong>Data yang Anda masukkan salah!</strong>
-                        <ul>
-                            @foreach($errors as $error)
-                                <li>  {{ $error }} </li>
-                            @endforeach
-                        </ul>
-                </div>
+            <div class="col-md-4">
+              <div class="alert alert-danger" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <i class="icon fa fa-warning"></i><strong>Data yang Anda masukkan salah!</strong>
+                <ul>
+                  @foreach($errors as $error)
+                  <li>  {{ $error }} </li>
+                  @endforeach
+                </ul>
               </div>
+            </div>
           <?php
           endif; ?>
           <!-- tutup -->
@@ -175,7 +172,7 @@ table, th, td {
                   <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span></button>
-                      <h4 class="modal-title">Edit Kelulusan Mahasiswa</h4>
+                      <h4 class="modal-title">Edit Kelulusan Mahasiswa {{$dept[0]->nama_departemen}}</h4>
                   </div>
                   <div class="modal-body">
                     <div class="box box-info">
@@ -298,7 +295,7 @@ table, th, td {
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Kelulusan Mahasiswa</h4>
+                <h4 class="modal-title">Kelulusan Mahasiswa {{$dept[0]->nama_departemen}}</h4>
             </div>
             <div class="modal-body">
               <div class="box box-info">
@@ -398,7 +395,7 @@ table, th, td {
     </div>
   
          <!-- import -->
-    <div class="modal" id="modal-exim" tabindex="1" aria-hidden="true" data-backdrop="static">
+    <div class="modal fade" id="modal-exim" tabindex="1" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <form method="post" action=" {{ route('lulusan.import') }}" class="form-horizontal" data-toggle="validator" enctype="multipart/form-data">
@@ -407,16 +404,20 @@ table, th, td {
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                <span aria-hiddem="true"> &times; </span>
               </button>
-               <h3 class="modal-title">Upload Kelulusan Mahasiswa</h3>
+               <h3 class="modal-title">Upload Data Kelulusan Mahasiswa {{$dept[0]->nama_departemen}}</h3>
             </div>   
             <div class="modal-body">
+              <div class="box box-info">
+                <div class="box-body">
               <div class="form-group">
                 <label for="file" class="col-sm-2 control-label">Upload</label>
-                  <div class="col-sm-10">
+                  <div class="col-md-10">
                     <input type="file" id="file" name="import_file" class="form-control" autofocus required>
                     <span class="help-block with-errors"></span>
                   </div>
-              </div>                    
+                </div>
+              </div> 
+              </div>                   
               <div class="form-group">
                 <div class="modal-footer">        
                   <button type="submit" class="btn btn-primary">Simpan</button>
@@ -437,38 +438,42 @@ table, th, td {
                 <h4 class="modal-title"><strong>Tabel 3.2</strong> Rata-rata Masa Studi dan IPK lulusan menurut Program Studi periode TA <?php echo $thn4 ?>/<?php echo $thn1 ?>, <?php echo $thn1 ?>/<?php echo $thn2 ?>, dan <?php echo $thn2 ?>/<?php echo $thn3 ?></h4>
               </div>
               <div class="modal-body">
-                <table id="example2" class="table table-bordered table-hover">
-                  <thead>
-                    <tr>
-                    <th rowspan="2" style="text-align: center"> Program Studi </th>
-                    <th colspan="2" style="text-align: center"> MASA STUDI </th>
-                    <th rowspan="2" style="text-align: center"> Rata-rata <br> IPK LULUSAN </th>
-                  </tr>
-                  <tr>
-                      <th style="text-align: center">Bulan</th>
-                      <th style="text-align: center">Tahun</th>
+                <div class="box box-info">
+                  <div class="box-body">
+                  <table id="example2" class="table table-bordered table-hover">
+                    <thead>
+                      <tr>
+                      <th rowspan="2" style="text-align: center"> Program Studi </th>
+                      <th colspan="2" style="text-align: center"> MASA STUDI </th>
+                      <th rowspan="2" style="text-align: center"> Rata-rata <br> IPK LULUSAN </th>
                     </tr>
-                  </thead>
-                  <tbody>
-                    @foreach ($lastdate as $lastdate2) 
-                    @if($lastdate2->id_departemen!=10)
                     <tr>
-                    <td value="{{ $lastdate2->id_departemen }}"> {!! $lastdate2->nama_departemen !!}</option>
-                    <td style="text-align: center"><?php echo number_format($lastdate2->total,2) ?></td>
-                    <td style="text-align: center"><?php echo number_format($lastdate2->totalthn,2) ?></td>
-                    <td style="text-align: center"><?php echo number_format($lastdate2->rataipk2,2) ?></td>
-                    </tr>
-                    @endif
-                    @endforeach
-                  </tbody>
-                  <tfoot>
-                      <th> RATA-RATA FMIPA </th>
-                      <th style="text-align: center">{{ number_format($rata_bln,2) }}</th>
-                      <th style="text-align: center">{{ number_format($rata_thn,2) }}</th>
-                      <th style="text-align: center">{{ number_format($rata_ipk,2) }}</th>
-                  </tfoot>
-                </table>
+                        <th style="text-align: center">Bulan</th>
+                        <th style="text-align: center">Tahun</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @foreach ($lastdate as $lastdate2) 
+                      @if($lastdate2->id_departemen!=10)
+                      <tr>
+                      <td value="{{ $lastdate2->id_departemen }}"> {!! $lastdate2->nama_departemen !!}</td>
+                      <td style="text-align: center"><?php echo number_format($lastdate2->total,2) ?></td>
+                      <td style="text-align: center"><?php echo number_format($lastdate2->totalthn,2) ?></td>
+                      <td style="text-align: center"><?php echo number_format($lastdate2->rataipk2,2) ?></td>
+                      </tr>
+                      @endif
+                      @endforeach
+                    </tbody>
+                    <tfoot>
+                        <th> RATA-RATA FMIPA </th>
+                        <th style="text-align: center">{{ number_format($rata_bln,2) }}</th>
+                        <th style="text-align: center">{{ number_format($rata_thn,2) }}</th>
+                        <th style="text-align: center">{{ number_format($rata_ipk,2) }}</th>
+                    </tfoot>
+                  </table>
               </div>
+            </div>
+          </div>
               <div class="modal-footer">
                   <a href="{{ route('lulusan.lulusanexcel')}}" class="btn btn-primary"><i class="fa fa-download"></i><strong> .xls</strong></a>
                   <a href="{{ route('lulusan.downloadlulusan')}}" class="btn btn-primary"><i class="fa fa-download"></i><strong>.pdf</strong></a>
@@ -483,40 +488,39 @@ table, th, td {
 
         <!-- modal Download user -->
         <!-- Download -->
-      <div class="modal" id="modal" tabindex="1" aria-hidden="true" data-backdrop="static">
-            <div class="modal-dialog modal-md">
-                <div class="modal-content">
-        <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        <span aria-hiddem="true"> &times; </span>
-        </button>
-          <h3 class="modal-title">Download Data Kelulusan Mahasiswa</h3>
-        </div>   
-
+      <div class="modal fade" id="modal" tabindex="1" aria-hidden="true">
+        <div class="modal-dialog modal-md">
+          <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hiddem="true"> &times; </span>
+            </button>
+              <h3 class="modal-title">Download Laporan Kelulusan Mahasiswa {{$dept[0]->nama_departemen}}</h3>
+            </div>   
              <div class="modal-body">
-                  <div class="form-group">
-                      
-                      <div class="col-sm-15">
-                        <a href="{{ route('lulusan.export') }}" class="btn btn-primary btn-md">
-                        <i class="fa fa-file-excel-o"> Download Format Excel</i>
-                        </a>
-                        <a href="download1" class="btn btn-primary btn-md">
-                        <i class="fa fa-file-pdf-o"> Download Format PDF</i>
-                        </a>
-                         <span class="help-block with-errors"></span>
-                      </div>
+              <div class="box box-info">
+                <div class="box-body">
+                  <div class="form-group">   
+                    <div class="col-sm-15">
+                      <a href="{{ route('lulusan.export') }}" class="btn btn-primary btn-md">
+                      <i class="fa fa-file-excel-o"> Download Format Excel</i>
+                      </a>
+                      <a href="download1" class="btn btn-primary btn-md">
+                      <i class="fa fa-file-pdf-o"> Download Format PDF</i>
+                      </a>
+                      <span class="help-block with-errors"></span>
+                    </div>
                   </div> 
-                   
-               <div class="form-group">
-                  <div class="modal-footer">
+                </div>
+              </div> 
+              <div class="form-group">
+                <div class="modal-footer">
                 </div>
               </div>
-         </div>
-
-        </form>
+            </div>
+          </div>
         </div>
-        </div>
-        </div>
+      </div>
 
 </section>
 @endsection

@@ -22,29 +22,32 @@ class JumlahController extends Controller
     public function index(Request $request)
     {
         $id_departemen = $request->user()->id_departemen;
-
+        $dept=DB::table('departemen')->where('id_dept', $id_departemen)->get();
         if(Auth::user()->id_departemen==10)
         {
-            $date1 = Carbon::now()->startOfYear()->subYear(4)->subMonth(4);
+            $date1 = Carbon::now()->startOfYear()->subYear(3)->subMonth(4);
             $date2 = Carbon::now()->startOfYear()->addYear(1)->subMonth(4);
             $jumlahs = Jumlah::whereBetween('tahun', [$date1,$date2])
                         ->join('departemen', 'id_dept', '=', 'id_departemen')
                         ->orderBy('tahun', 'desc')
                         ->get();
 
-              $totaljumlah=DB::table('jumlahs')
+            $totaljumlah=DB::table('jumlahs')
                         ->select(DB::raw('(mbt_reguler + mt_reguler + total_reguler + mbt_nonreguler + mt_nonreguler + total_nonreguler) as totaljumlah'))
                         ->first();
         $totaldayatam=Jumlah::whereBetween('tahun', [$date1,$date2])
+                        ->join('departemen', 'id_dept', '=', 'id_departemen')
                         ->sum('daya_tampung');
         $totalikut=Jumlah::whereBetween('tahun', [$date1,$date2])
+                        ->join('departemen', 'id_dept', '=', 'id_departemen')
                         ->sum('ikut_seleksi');
         $totallulus=Jumlah::whereBetween('tahun', [$date1,$date2])
+                        ->join('departemen', 'id_dept', '=', 'id_departemen')
                         ->sum('lulus_seleksi');
         }
         else
         {
-        $date1 = Carbon::now()->startOfYear()->subYear(4)->subMonth(4);
+        $date1 = Carbon::now()->startOfYear()->subYear(3)->subMonth(4);
         $date2 = Carbon::now()->startOfYear()->addYear(1)->subMonth(4);
         $jumlahs = Jumlah::whereBetween('tahun', [$date1,$date2])
                         ->join('departemen', 'id_dept', '=', 'id_departemen')
@@ -56,22 +59,32 @@ class JumlahController extends Controller
                         ->select(DB::raw('(mbt_reguler + mt_reguler + total_reguler + mbt_nonreguler + mt_nonreguler + total_nonreguler) as totaljumlah'))
                         ->first();
         $totaldayatam=Jumlah::whereBetween('tahun', [$date1,$date2])
+                        ->join('departemen', 'id_dept', '=', 'id_departemen')
+                        ->where('id_departemen', $id_departemen)
                         ->sum('daya_tampung');
         $totalikut=Jumlah::whereBetween('tahun', [$date1,$date2])
+                        ->join('departemen', 'id_dept', '=', 'id_departemen')
+                        ->where('id_departemen', $id_departemen)
                         ->sum('ikut_seleksi');
         $totallulus=Jumlah::whereBetween('tahun', [$date1,$date2])
+                        ->join('departemen', 'id_dept', '=', 'id_departemen')
+                        ->where('id_departemen', $id_departemen)
                         ->sum('lulus_seleksi');
-
         }  
-
-        $listtahun=DB::table('jumlahs', 'tahun')
+            $date1 = Carbon::now()->startOfYear()->subYear(3)->subMonth(4);
+            $date2 = Carbon::now()->startOfYear()->addYear(1)->subMonth(4);
+            $listtahun = Jumlah::whereBetween('tahun', [$date1,$date2])
+        // $listtahun=DB::table('jumlahs', 'tahun')
                     ->where('id_departemen', $id_departemen)
+                    ->orderBy('tahun','asc')
                     ->get();
 
         $listdept=DB::table('departemen')
+                    // ->orderBy('id_dept','desc')
                     ->get();
-
-        return view('jumlah/index',compact('jumlahs', 'totaljumlah', 'listtahun', 'listdept', 'totaldayatam', 'totalikut', 'totallulus'));
+     // dd($dept[0]->nama_departemen);
+// dd($jumlahs[0]->nama_departemen);
+        return view('jumlah/index2',compact('jumlahs', 'totaljumlah', 'listtahun', 'listdept', 'totaldayatam', 'totalikut', 'totallulus','dept'));
 
     }
 
@@ -127,7 +140,7 @@ class JumlahController extends Controller
      public function edit($id_jumlah)
     {
         // dd($id_jumlah);
-        return view('jumlah/index',compact('jumlah', 'page'));
+        return view('jumlah/index2',compact('jumlah', 'page'));
 
     }
     
@@ -235,7 +248,7 @@ class JumlahController extends Controller
                         ->where('id_departemen', $id_departemen)
                         ->where('id','=',Auth::user()->id)
                         ->get();
-            $date1 = Carbon::now()->startOfYear()->subYear(4)->subMonth(4);
+            $date1 = Carbon::now()->startOfYear()->subYear(3)->subMonth(4);
             $date2 = Carbon::now()->startOfYear()->addYear(1)->subMonth(4);
             $jumlahs = Jumlah::whereBetween('tahun', [$date1,$date2])
                         ->join('departemen', 'id_dept', '=', 'id_departemen')
@@ -382,9 +395,8 @@ class JumlahController extends Controller
          }
                 $jumData .='</table>';
     }
- 
-        header('Content-Type: application/xls');
-        header('Content-Disposition: attachment; filename=Data Jumlah Mahasiswa.xls');
+        header('Content-Type: application/vnd.vnd.ms-excel');
+        header('Content-Disposition: attachment; filename= Data Jumlah Mahasiswa '.$jumlahs[0]->nama_departemen.' .xls');
         echo $jumData;
     }
 
@@ -557,13 +569,14 @@ class JumlahController extends Controller
         }
 
         header('Content-Type: application/vnd.vnd.ms-excel');
-        header('Content-Disposition: attachment; filename=Jumlah Data Mahasiswa FMIPA.xls');
+        header('Content-Disposition: attachment; filename=Tabel_3.1_Jumlah_Mahasiswa_FMIPA.xls');
         echo $jumData;
     }
     
     public function cariTahun(Request $request)
     {
          $id_departemen = $request->user()->id_departemen;
+         $dept=DB::table('departemen')->where('id_dept', $id_departemen)->get();
         $cariTahun = $request->idTahun;
 
          $jumlahs = DB::table('jumlahs')
@@ -583,19 +596,23 @@ class JumlahController extends Controller
                         ->sum('ikut_seleksi');
         $totallulus=DB::table('jumlahs')
                         ->sum('lulus_seleksi');
-
-        $listtahun=DB::table('jumlahs')
+            $date1 = Carbon::now()->startOfYear()->subYear(3)->subMonth(4);
+            $date2 = Carbon::now()->startOfYear()->addYear(1)->subMonth(4);
+            $listtahun = Jumlah::whereBetween('tahun', [$date1,$date2])
+        // $listtahun=DB::table('jumlahs')
                 ->where('id_departemen', $id_departemen)
                     ->get();
 
-         return view('jumlah/index',compact('jumlahs', 'totaljumlah', 'listtahun', 'totaldayatam', 'totalikut', 'totallulus'));
+         return view('jumlah/index2',compact('jumlahs', 'totaljumlah', 'listtahun', 'totaldayatam', 'totalikut', 'totallulus','dept'));
 
     }
 
     public function cari(Request $request)
     {
-
-         $cari = $request->idDept;
+        $id_departemen = $request->user()->id_departemen;
+        $dept=DB::table('departemen')->where('id_dept', $id_departemen)->get();
+        
+        $cari = $request->idDept;
              if($cari==10){
             $jumlahs = DB::table('jumlahs')
                         ->join('departemen', 'id_dept', '=', 'id_departemen')
@@ -632,11 +649,11 @@ class JumlahController extends Controller
                         ->sum('lulus_seleksi');
         }
         
-
+        
         $listdept=DB::table('departemen')
                     ->get();
         
-        return view('jumlah/index',compact('jumlahs','totaljumlah', 'listdept', 'totaldayatam', 'totalikut', 'totallulus'));
+        return view('jumlah/index2',compact('jumlahs','totaljumlah', 'listdept', 'totaldayatam', 'totalikut', 'totallulus','dept'));
 
     }
 
@@ -651,16 +668,18 @@ class JumlahController extends Controller
                         ->where('id','=',Auth::user()->id)
                         ->get();
 
-            $date1 = Carbon::now()->startOfYear()->subYear(4)->subMonth(4);
+            $date1 = Carbon::now()->startOfYear()->subYear(3)->subMonth(4);
             $date2 = Carbon::now()->startOfYear()->addYear(1)->subMonth(4);
             $jumlahs = Jumlah::whereBetween('tahun', [$date1,$date2])
                         ->join('departemen', 'id_dept', '=', 'id_departemen')
                         ->where('id_departemen', $id_departemen)
                         ->orderBy('tahun', 'desc')
                         ->get();
+        // dd($date1);
         $pdf = PDF::loadView('jumlah.pdf', compact('jumlahs','jumlh'));
         $pdf ->setPaper('a4', 'potrait');
         return $pdf->stream();
+
         // return view('jumlah.pdf', compact('jumlahs'));
     }
     

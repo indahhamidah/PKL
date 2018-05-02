@@ -84,10 +84,11 @@ class LulusanController extends Controller
         
         $listdept=DB::table('departemen')
                     ->get();
+         $dept=DB::table('departemen')->where('id_dept', $id_departemen)->get();
         //dd($idDept);
      // dd($lastdate);
                     // dd($tgl);
-        return view('lulusan/index',compact('lulusans','ratabulan','ratatahun','rataipk', 'listdept', 'beda','ratabulan2', 'lastdate','thn1','thn2','thn3','rata_bln','rata_thn','rata_ipk','thn4'));
+        return view('lulusan/index',compact('lulusans','ratabulan','ratatahun','rataipk', 'listdept', 'beda','ratabulan2', 'lastdate','thn1','thn2','thn3','rata_bln','rata_thn','rata_ipk','thn4','dept'));
             // ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
@@ -183,6 +184,7 @@ class LulusanController extends Controller
 
     public function cari(Request $request)
     {
+        $id_departemen = Auth::user()->id_departemen;
          $cariLulusan = $request->idDept;
         if($cariLulusan==10)
         {
@@ -212,7 +214,7 @@ class LulusanController extends Controller
                         ->where('id_departemen', $cariLulusan)
                         ->avg('ipk');
         }
-
+        $dept=DB::table('departemen')->where('id_dept', $id_departemen)->get();
         $listdept=DB::table('departemen')
                     ->get();
         // nampilin data 3 tahun terakhir
@@ -242,7 +244,7 @@ class LulusanController extends Controller
          $thn3 = Carbon::now()->startOfYear()->format('Y');
          $thn4 = Carbon::now()->startOfYear()->subYear(3)->format('Y');
 
-        return view('lulusan/index',compact('lulusans','ratabulan','ratatahun','rataipk', 'listdept', 'ratabulan2','lastdate','thn1','thn2','thn3', 'thn4','rata_bln', 'rata_thn','rata_ipk'));
+        return view('lulusan/index',compact('lulusans','ratabulan','ratatahun','rataipk', 'listdept', 'ratabulan2','lastdate','thn1','thn2','thn3', 'thn4','rata_bln', 'rata_thn','rata_ipk','dept'));
 
     }
 
@@ -377,7 +379,7 @@ class LulusanController extends Controller
         }
 
         header('Content-Type: application/vnd.vnd.ms-excel');
-        header('Content-Disposition: attachment; filename=lulusan.xls');
+        header('Content-Disposition: attachment; filename=Rata-rata Masa Studi dan IPK Lulusan FMIPA.xls');
         echo $lulData;
     }
 
@@ -655,9 +657,9 @@ class LulusanController extends Controller
                   <th style="border:1px solid #000; border-top:0px; border-width: thin; background-color:#daeef3;text-align: center;" style="text-align: center;"><font face="Times New Rowman" >'.number_format(((($maxts/$total_jml)*100)+(($max_ts1/$total_jml_ts1)*100)+(($max_ts2/$jum_ts2)*100)+(($max_ts3/$jum_ts3)*100)+(($max_ts4/$jum_ts4)*100))/5,2).'</th>
                   <th></th>
                   </tr>';
-}
-header('Content-Type: application/vnd.vnd.ms-excel');
-        header('Content-Disposition: attachment; filename=Data Kelulusan Departemen.xls');
+        }
+        header('Content-Type: application/vnd.vnd.ms-excel');
+        header('Content-Disposition: attachment; filename=Data Kelulusan Mahasiswa '.$lulusans[0]->nama_departemen.'.xls');
         echo $lusData;
 }
 

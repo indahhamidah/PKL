@@ -188,6 +188,74 @@
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">MAIN NAVIGATION</li>
+        <!-- superadmin -->
+        @if(Auth::user()->id_departemen==10)
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-mortar-board"></i> <span> Standar 3</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li class="active"><a href="jumlah"><i class="fa fa-circle-o"></i> Akademik</a></li>
+            <li><a href="lulusan"><i class="fa fa-circle-o"></i> Kelulusan Mahasiswa</a></li>
+            <li><a href="kegiatan"><i class="fa fa-circle-o"></i> Pembinaan Non-akademik</a></li>
+          </ul>
+        </li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-files-o"></i>
+            <span> Standar 4</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="pages/layout/top-nav.html"><i class="fa fa-circle-o"></i> Dosen Tetap</a></li>
+            <li><a href="pages/layout/boxed.html"><i class="fa fa-circle-o"></i> Tenaga Kependidikan</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="pages/widgets.html">
+            <i class="fa fa-trophy"></i> <span> Standar 5</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+        </li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-pie-chart"></i>
+            <span> Standar 6</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="pages/charts/chartjs.html"><i class="fa fa-circle-o"></i> Penerimaan Dana</a></li>
+            <li><a href="pages/charts/morris.html"><i class="fa fa-circle-o"></i> Penggunaan Dana</a></li>
+            <li><a href="pages/charts/flot.html"><i class="fa fa-circle-o"></i> Sarana Tambahan</a></li>
+            <li><a href="pages/charts/inline.html"><i class="fa fa-circle-o"></i> Prasarana Tambahan</a></li>
+            <li><a href="pages/charts/flot.html"><i class="fa fa-circle-o"></i> Perangkat Keras</a></li>
+            <li><a href="pages/charts/inline.html"><i class="fa fa-circle-o"></i> Sistem Informasi</a></li>
+          </ul>
+        </li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-laptop"></i>
+            <span> Standar 7</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="pages/UI/general.html"><i class="fa fa-circle-o"></i> Penelitian</a></li>
+            <li><a href="pages/UI/icons.html"><i class="fa fa-circle-o"></i> Pengabdian</a></li>
+            <li><a href="pages/UI/buttons.html"><i class="fa fa-circle-o"></i> Kerjasama</a></li>
+          </ul>
+        </li>
+        @endif
         <!-- buat admin -->
         @if(Auth::User()->role==2)
         <li class="active">

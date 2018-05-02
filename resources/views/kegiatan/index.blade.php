@@ -1,12 +1,9 @@
 @extends('layouts.app')
 @section('content')
-<!-- <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script> -->
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>
-        PEMBINAAN NON-AKADEMIK
+      <h1 style="text-transform: uppercase;">
+        PEMBINAAN NON-AKADEMIK @if(Auth::User()->id_departemen==10) FMIPA IPB @elseif(Auth::User()->id_departemen!=10) program studi {{$dept[0]->nama_departemen}} @endif
       </h1>
     </section>
 
@@ -73,7 +70,7 @@
             <div class="box-body"> 
               <table id="example2" class="table table-bordered table-hover">
                 <thead>
-                  <h5 style="text-align: center"> Tabel 3.3 Data pembinaan non-akademik yang diselenggarakan di level FMIPA baik oleh Fakultas maupun Organisasi Kemahasiswaan tingkat FMIPA</h5>
+                  <h4 style="text-align: left;"> Tabel 3.3 Data Pembinaan Non-akademik @if(Auth::User()->id_departemen==10) yang diselenggarakan di level FMIPA baik oleh Fakultas maupun Organisasi Kemahasiswaan tingkat FMIPA @elseif(Auth::User()->id_departemen!=10) Program Studi {{$dept[0]->nama_departemen}} FMIPA IPB @endif</h4>
                   <tr>
                     <th width="30px">No</th>
                     <th>Kegiatan</th>
@@ -91,10 +88,10 @@
               @foreach ($kegiatan as $kegiatan)
               <?php $no++ ;?>
                 <tr>
-                  <td>{{ $no }}</td>
-                  <td>{{$kegiatan->nama_kegiatan}}</td>
-                  <td>{{$kegiatan->penyelenggara}}</td>
-                  <td>{{$kegiatan->tahun_kegiatan}}</td>
+                  <td><p style="font-size:16px">{{ $no }}</p></td>
+                  <td><p style="font-size:16px">{{$kegiatan->nama_kegiatan}}</p></td>
+                  <td><p style="font-size:16px">{{$kegiatan->penyelenggara}}</p></td>
+                  <td><p style="font-size:16px">{{$kegiatan->tahun_kegiatan}}</p></td>
                   @if(Auth::user()->id_departemen!=10)
                   @if(Auth::user()->role!=2)
                   <td>
@@ -117,7 +114,7 @@
                     <div class="modal-header">
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span></button>
-                      <h4 class="modal-title">Edit Kegiatan</h4>
+                      <h4 class="modal-title">Edit Pembinaan Non-akademik {{$dept[0]->nama_departemen}}</h4>
                     </div>
                     <div class="modal-body">
                       <div class="box box-info">
@@ -136,7 +133,7 @@
                               </div>
                           </div>                                              
                           <div class="form-group">
-                            <label class="col-sm-5 control-label">Tahun</label>
+                            <label class="col-sm-12 control-label">Tahun</label>
                               <div class="col-sm-6">
                                {!! Form::selectRange('tahun_kegiatan', '2016', '2030', array('placeholder' => 'Tahun','class' => 'form-control')) !!}
                               </div>
@@ -169,7 +166,7 @@
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span></button>
-               <h4 class="modal-title">Pembinaan Non-Akademik</h4>
+               <h4 class="modal-title">Pembinaan Non-Akademik {{$dept[0]->nama_departemen}}</h4>
           </div>
           <div class="modal-body">
             <div class="box box-info">
@@ -210,7 +207,7 @@
   </div>
 
           <!-- import -->
-  <div class="modal" id="modal-exim" tabindex="1" aria-hidden="true" data-backdrop="static">
+  <div class="modal fade" id="modal-exim" tabindex="1" aria-hidden="true">
     <div class="modal-dialog modal-md">
       <div class="modal-content">
         <form method="post" action=" {{ route('kegiatan.import') }}" class="form-horizontal" data-toggle="validator" enctype="multipart/form-data">
@@ -219,14 +216,18 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hiddem="true"> &times; </span>
           </button>
-          <h3 class="modal-title">Unggah Pembinaan Non-Akademik</h3>
+          <h3 class="modal-title">Upload Pembinaan Non-Akademik {{$dept[0]->nama_departemen}}</h3>
           </div>   
             <div class="modal-body">
-              <div class="form-group">
-              <label for="file" class="col-sm-2 control-label">Unggah</label>
-                <div class="col-sm-10">
-                <input type="file" id="file" name="import_file" class="form-control" autofocus required>
-                <span class="help-block with-errors"></span>
+              <div class="box box-info">
+                <div class="box-body">
+                  <div class="form-group">
+                  <label for="file" class="col-sm-2 control-label">Upload</label>
+                    <div class="col-sm-10">
+                    <input type="file" id="file" name="import_file" class="form-control" autofocus required>
+                    <span class="help-block with-errors"></span>
+                    </div>
+                  </div>
                 </div>
               </div>      
               <div class="form-group">
@@ -240,7 +241,7 @@
       </div>
     </div>
              <!-- Download -->
-    <div class="modal" id="modal" tabindex="1" aria-hidden="true" data-backdrop="static">
+    <div class="modal fade" id="modal" tabindex="1" aria-hidden="true">
       <div class="modal-dialog modal-md">
         <div class="modal-content">
           <form method="post" action=" {{ route('kegiatan.download') }}" class="form-horizontal" data-toggle="validator" enctype="multipart/form-data">
@@ -249,18 +250,22 @@
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hiddem="true"> &times; </span>
             </button>
-            <h3 class="modal-title">Download Pembinaan Non-akademik</h3>
+            <h3 class="modal-title">Download Pembinaan Non-akademik {{$dept[0]->nama_departemen}}</h3>
             </div>   
             <div class="modal-body">
-              <div class="form-group">              
-                <div class="col-sm-10">
-                  <a href="{{ route('kegiatan.export') }}" class="btn btn-primary btn-md">
-                    <i class="fa fa-file-excel-o"> Download Excel</i>
-                  </a>
-                  <a href="download2" class="btn btn-primary btn-md">
-                  <i class="fa fa-file-pdf-o"> Download PDF</i>
-                  </a>                 
-                  <span class="help-block with-errors"></span>
+              <div class="box box-info">
+                <div class="box-body">
+                  <div class="form-group">              
+                    <div class="col-sm-10">
+                      <a href="{{ route('kegiatan.export') }}" class="btn btn-primary btn-md">
+                        <i class="fa fa-file-excel-o"> Download Excel</i>
+                      </a>
+                      <a href="download2" class="btn btn-primary btn-md">
+                      <i class="fa fa-file-pdf-o"> Download PDF</i>
+                      </a>                 
+                      <span class="help-block with-errors"></span>
+                    </div>
+                  </div>
                 </div>
               </div>              
               <div class="form-group">
