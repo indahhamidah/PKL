@@ -26,8 +26,8 @@ class PenggunaController extends Controller
         		->where('id_departemen',$id_departemen)
                 ->orderBy('name','asc')
                 ->get();
-        
-        return view('auth/user', compact('user'));
+        $dept=DB::table('departemen')->where('id_dept', $id_departemen)->get();
+        return view('auth/user', compact('user', 'dept'));
     }
 
     public function validator(array $request)
@@ -57,9 +57,10 @@ class PenggunaController extends Controller
         $user->password = bcrypt($request->password);
         $user->role = $request->role;
         $user->id_departemen= $Auth->id_departemen;
+       
 
         $user->save();
-        // // dd($user);
+        //dd($user);
         return redirect()->route('pengguna.index')
                         ->with('success','Pengguna created successfully');
     }

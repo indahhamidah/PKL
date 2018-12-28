@@ -102,5 +102,9 @@
                    </tr>
                    </font>
                    </table>
+                   
+            @foreach ($redaksiJumlah as $redaksijum)
+            {!! $redaksijum->redaksi_jumlah!!}
+            @endforeach
 </body>
 </html>

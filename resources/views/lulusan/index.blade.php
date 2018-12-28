@@ -23,7 +23,7 @@ table, th, td {
               
             <!-- /.box-header -->
              @if(Auth::User()->id_departemen!=10)
-             @if(Auth::User()->role!=2)
+             @if(Auth::User()->role!=2 and Auth::User()->role!=14)
             <button type="button" class="btn btn-primary pull-left" style="margin-right: 10px" data-toggle="modal" data-target="#modal-default">
               <i class="fa fa-plus"></i> <span> Tambah</span>
             </button>
@@ -32,19 +32,29 @@ table, th, td {
             </button>
             <button type="button" class="btn btn-primary pull-left" style="margin-right: 10px" data-toggle="modal" data-target="#modal">
               <i class="fa fa-download"></i> <span> Download</span>
-            </button> 
+            </button>
+            <a href="/redaksilulusan" class="btn btn-primary pull-left" role="button">
+                  <i class="fa fa-file-text"></i> Redaksi</a>
             <div class="col-md-offset-10">
              <input class="form-control" id="myInput" type="text" placeholder="Cari...">
             </div>  
-             @elseif(Auth::User()->role==2)
+             @elseif(Auth::User()->role==2 or Auth::User()->role==14)
               <button type="button" class="btn btn-primary pull-left" style="margin-right: 10px" data-toggle="modal" data-target="#modal">
               <i class="fa fa-download"></i> <span> Download</span>
               </button>
             @endif
-            @else
+            @elseif(Auth::User()->id_departemen==10)
+                @if(Auth::User()->role!=1 and Auth::User()->role!=14)
               <button type="button" class="btn btn-primary pull-left" style="margin-right: 10px" data-toggle="modal" data-target="#modalReport">
               <i class="fa fa-file-text"></i> <span> Report</span>
               </button>
+              <a href="/redaksilulusan" class="btn btn-primary pull-left" role="button">
+                  <i class="fa fa-file-text"></i> Redaksi</a>
+                @else
+              <button type="button" class="btn btn-primary pull-left" style="margin-right: 10px" data-toggle="modal" data-target="#modalReport">
+              <i class="fa fa-file-text"></i> <span> Report</span>
+              </button>
+              @endif
                 <!-- date range -->
                 
                 <!-- close -->
@@ -119,7 +129,7 @@ table, th, td {
                   <th colspan="2" style="text-align: center">Total Masa Studi</th>
                   <th rowspan="2" style="text-align: center">IPK</th>
                   @if(Auth::user()->id_departemen!=10)
-                  @if(Auth::user()->role!=2)
+                  @if(Auth::user()->role!=2 and Auth::User()->role!=14)
                   <th rowspan="2" style="text-align: center">Actions</th>
                   @endif
                   @endif
@@ -152,7 +162,7 @@ table, th, td {
                    <td>{{$lulusan->total_tahun}}</td>
                    <td>{{$lulusan->ipk}}</td>
                     @if(Auth::user()->id_departemen!=10)
-                    @if(Auth::User()->role!=2)
+                    @if(Auth::User()->role!=2 and Auth::User()->role!=14)
                    <td>
                     <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal-default{{$lulusan->id_lulusan}}">
                     <span>Ubah</span>
@@ -279,7 +289,7 @@ table, th, td {
                 <th><?php echo number_format($ratatahun,2) ?> </th>
                 <th><?php echo number_format($rataipk,2) ?> </th>
                 @if(Auth::user()->id_departemen!=10)
-                @if(Auth::user()->role!=2)
+                @if(Auth::user()->role!=2 and Auth::User()->role!=14)
                 <th></th>
                 @endif
                 @endif

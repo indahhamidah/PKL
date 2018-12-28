@@ -1,8 +1,8 @@
 @extends('layouts.app')
 @section('content')
     <section class="content-header">
-      <h1>
-        PENGGUNA PADA DEPARTEMEN
+      <h1 style="text-transform:uppercase">
+        pengguna di @if(Auth::User()->id_departemen==10) FMIPA IPB @elseif(Auth::User()->id_departemen!=10) program studi {{$dept[0]->nama_departemen}} @endif
       </h1>
     </section>
 
@@ -13,11 +13,9 @@
           <div class="box">
             <div class="box-header">
            <!-- Button trigger modal -->
-            @if(Auth::User()->id_departemen!=10)
             <button type="button" class="btn btn-primary pull-left" style="margin-right: 10px" data-toggle="modal" data-target="#tambah_user">
-            <i class="fa fa-user-plus"></i> <span>Tambah User</span>
+            <i class="fa fa-user-plus"></i> <span>Tambah Pengguna</span>
             </button>
-            @endif
              <!-- Cari -->
               <div class="col-md-offset-10">
                 <input class="form-control" id="myInput" type="text" placeholder="Cari...">
@@ -55,8 +53,8 @@
                     <th>Nama</th>
                     <th>Username</th>
                     <th>Email</th>
-                    <th>Role</th>
-                    <th>Actions</th>
+                    <th>Tugas</th>
+                    <th>Aksi</th>
                   </tr>
                 </thead>
               <tbody id="pengguna-list" name="pengguna-list">
@@ -68,18 +66,34 @@
                   <td>{{$pengguna->name}}</td>
                   <td>{{$pengguna->username}}</td>
                   <td>{{$pengguna->email}}</td>
-                  @if($pengguna->role==2)
-                  <td>Ketua Tata Usaha Departemen</td>
+                  @if($pengguna->role==1)
+                  <td>SuperAdmin</td>
+                  @elseif($pengguna->role==2)
+                  <td>Admin</td>
                   @elseif($pengguna->role==3)
-                  <td>Ketua Program Studi</td>
+                  <td>Standar 1</td>
                   @elseif($pengguna->role==4)
-                  <td>Ketua Tata Usaha Departemen</td>
+                  <td>Standar 2 - Tata Pamong</td>
                   @elseif($pengguna->role==5)
-                  <td>Sekretaris Departemen</td>
+                  <td>Standar 2 - Kerjasama</td>
                   @elseif($pengguna->role==6)
-                  <td>Sekretaris Program Studi</td>
-                  @else
-                  <td></td>
+                  <td>Standar 3</td>
+                  @elseif($pengguna->role==7)
+                  <td>Standar 4</td>
+                  @elseif($pengguna->role==8)
+                  <td>Standar 5 - Keuangan</td>
+                  @elseif($pengguna->role==9)
+                  <td>Standar 5 - Sarana Prasarana</td>
+                  @elseif($pengguna->role==10)
+                  <td>Standar 6</td>
+                  @elseif($pengguna->role==11)
+                  <td>Standar 7</td>
+                  @elseif($pengguna->role==12)
+                  <td>Standar 8</td>
+                  @elseif($pengguna->role==13)
+                  <td>Standar 9</td>
+                  @elseif($pengguna->role==14)
+                  <td>Super User</td>
                   @endif
                   <td>
                   <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#edit_user{{$pengguna->id}}">
@@ -97,7 +111,7 @@
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Edit User</h4>
+                <h4 class="modal-title">Edit Pengguna</h4>
               </div>
               <div class="modal-body">
                 <div class="box box-info">
@@ -105,7 +119,7 @@
                  <form class="form-horizontal" method="POST" action="{{ route('pengguna.update', $pengguna->id) }}">
                    {{ csrf_field() }}
                         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                            <label for="name" class="col-md-4 control-label">Name</label>
+                            <label for="name" class="col-md-4 control-label">Nama</label>
                             <div class="col-md-6">
                                 <input id="name" type="text" class="form-control" name="name" value="{{ $pengguna->name }}" required autofocus>
                                 @if ($errors->has('name'))
@@ -131,7 +145,7 @@
                         <br>
                         <br>
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">E-Mail Address</label>
+                            <label for="email" class="col-md-4 control-label">Alamat E-Mail</label>
                             <div class="col-md-6">
                                 <input id="email" type="email" class="form-control" name="email" value="{{ $pengguna->email }}" required>
                                 @if ($errors->has('email'))
@@ -157,7 +171,7 @@
                         <br>
                         <br>
                         <div class="form-group">
-                            <label for="password-confirm" class="col-md-4 control-label">Confirm Password</label>
+                            <label for="password-confirm" class="col-md-4 control-label">Konfirmasi Password</label>
                             <div class="col-md-6">
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
                             </div>
@@ -165,16 +179,39 @@
                         <br>
                         <br>
                         <div class="form-group">
-                          <label class="col-sm-4 control-label">Role</label>
+                          <label class="col-sm-4 control-label">Tugas</label>
                           <div class="col-sm-6">
                               <select name="role" class="form-control">
-                                <option>Pilih Role</option>
-                                <!-- <option value=1>SuperAdmin</option> -->
-                                <!-- <option value=2>Admin</option> -->
-                                <option value=3>Ketua Program Studi</option>
-                                <option value=4>Ketua Tata Usaha Departemen</option>
-                                <option value=5>Sekretaris Departemen</option>
-                                <option value=6>Sekretaris Program Studi</option>
+                                <!-- <option>Pilih Role</option> -->
+                                @if($pengguna->id_dept==10)
+                                <option value=1 {{$pengguna->role == 1 ? 'selected' : '' }}>SuperAdmin</option>
+                                <option value=14 {{$pengguna->role == 14 ? 'selected' : '' }}>Super User</option>
+                                <option value=3 {{$pengguna->role == 3 ? 'selected' : '' }}>Standar 1</option>
+                                <option value=4 {{$pengguna->role == 4 ? 'selected' : '' }}>Standar 2 - Tata Pamong</option>
+                                <option value=5 {{$pengguna->role == 5 ? 'selected' : '' }}>Standar 2 - Kerjasama</option>
+                                <option value=6 {{$pengguna->role == 6 ? 'selected' : '' }}>Standar 3</option>
+                                <option value=7 {{$pengguna->role == 7 ? 'selected' : '' }}>Standar 4</option>
+                                <option value=8 {{$pengguna->role == 8 ? 'selected' : '' }}>Standar 5 - Keuangan</option>
+                                <option value=9 {{$pengguna->role == 9 ? 'selected' : '' }}>Standar 5 - Sarana Prasarana</option>
+                                <option value=10 {{$pengguna->role == 10 ? 'selected' : '' }}>Standar 6</option>
+                                <option value=11 {{$pengguna->role == 11 ? 'selected' : '' }}>Standar 7</option>
+                                <option value=12 {{$pengguna->role == 12 ? 'selected' : '' }}>Standar 8</option>
+                                <option value=13 {{$pengguna->role == 13 ? 'selected' : '' }}>Standar 9</option>
+                                @else
+                                <option value=2 {{$pengguna->role == 2 ? 'selected' : '' }}>Admin</option>
+                                <option value=14 {{$pengguna->role == 14 ? 'selected' : '' }}>Super User</option>
+                                <option value=3 {{$pengguna->role == 3 ? 'selected' : '' }}>Standar 1</option>
+                                <option value=4 {{$pengguna->role == 4 ? 'selected' : '' }}>Standar 2 - Tata Pamong</option>
+                                <option value=5 {{$pengguna->role == 5 ? 'selected' : '' }}>Standar 2 - Kerjasama</option>
+                                <option value=6 {{$pengguna->role == 6 ? 'selected' : '' }}>Standar 3</option>
+                                <option value=7 {{$pengguna->role == 7 ? 'selected' : '' }}>Standar 4</option>
+                                <option value=8 {{$pengguna->role == 8 ? 'selected' : '' }}>Standar 5 - Keuangan</option>
+                                <option value=9 {{$pengguna->role == 9 ? 'selected' : '' }}>Standar 5 - Sarana Prasarana</option>
+                                <option value=10 {{$pengguna->role == 10 ? 'selected' : '' }}>Standar 6</option>
+                                <option value=11 {{$pengguna->role == 11 ? 'selected' : '' }}>Standar 7</option>
+                                <option value=12 {{$pengguna->role == 12 ? 'selected' : '' }}>Standar 8</option>
+                                <option value=13 {{$pengguna->role == 13 ? 'selected' : '' }}>Standar 9</option>
+                                @endif
                               </select>
                           </div>
                         </div>
@@ -193,9 +230,6 @@
             <!-- /.modal-content -->
           </div>
           <!-- /.modal-dialog -->
-
-
-
                 @endforeach
              </tbody>
            </table>
@@ -211,7 +245,7 @@
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Tambah User</h4>
+                <h4 class="modal-title">Tambah Pengguna</h4>
               </div>
               <div class="modal-body">
                 <div class="box box-info">
@@ -219,7 +253,7 @@
                  <form class="form-horizontal" method="POST" action="{{ route('pengguna.store') }}">
                         {{ csrf_field() }}
                         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                            <label for="name" class="col-md-4 control-label">Name</label>
+                            <label for="name" class="col-md-4 control-label">Nama</label>
                             <div class="col-md-6">
                                 <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" required autofocus>
                                 @if ($errors->has('name'))
@@ -242,7 +276,7 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">E-Mail Address</label>
+                            <label for="email" class="col-md-4 control-label">Alamat E-Mail</label>
                             <div class="col-md-6">
                                 <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>
                                 @if ($errors->has('email'))
@@ -264,29 +298,52 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="password-confirm" class="col-md-4 control-label">Confirm Password</label>
+                            <label for="password-confirm" class="col-md-4 control-label">Konfirmasi Password</label>
                             <div class="col-md-6">
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
                             </div>
                         </div>
                         <div class="form-group">
-                          <label class="col-sm-4 control-label">Role</label>
+                          <label class="col-sm-4 control-label">Tugas</label>
                           <div class="col-sm-6">
                               <select name="role" class="form-control">
-                                <option>Pilih Role</option>
-                                <!-- <option value=1>SuperAdmin</option> -->
-                                <!-- <option value=2>Admin</option> -->
-                                <option value=3>Ketua Program Studi</option>
-                                <option value=4>Ketua Tata Usaha Departemen</option>
-                                <option value=5>Sekretaris Departemen</option>
-                                <option value=6>Sekretaris Program Studi</option>
+                                <option>Pilih Tugas</option>
+                                @if($pengguna->id_dept==10)
+                                <option value=1>SuperAdmin</option>
+                                <option value=14>Super User</option>
+                                <option value=3>Standar 1</option>
+                                <option value=4>Standar 2 - Tata Pamong</option>
+                                <option value=5>Standar 2 - Kerjasama</option>
+                                <option value=6>Standar 3</option>
+                                <option value=7>Standar 4</option>
+                                <option value=8>Standar 5 - Keuangan</option>
+                                <option value=9>Standar 5 - Sarana Prasarana</option>
+                                <option value=10>Standar 6</option>
+                                <option value=11>Standar 7</option>
+                                <option value=12>Standar 8</option>
+                                <option value=13>Standar 9</option>
+                                @else
+                                <option value=2>Admin</option>
+                                <option value=14>Super User</option>
+                                <option value=3>Standar 1</option>
+                                <option value=4>Standar 2 - Tata Pamong</option>
+                                <option value=5>Standar 2 - Kerjasama</option>
+                                <option value=6>Standar 3</option>
+                                <option value=7>Standar 4</option>
+                                <option value=8>Standar 5 - Keuangan</option>
+                                <option value=9>Standar 5 - Sarana Prasarana</option>
+                                <option value=10>Standar 6</option>
+                                <option value=11>Standar 7</option>
+                                <option value=12>Standar 8</option>
+                                <option value=13>Standar 9</option>
+                                @endif
                               </select>
                           </div>
                         </div>
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">
-                                    Tambah User
+                                    Tambah Pengguna
                                 </button>
                             </div>
                         </div>

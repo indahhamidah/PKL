@@ -110,6 +110,7 @@
                                 <option value=4>Ketua Tata Usaha Departemen</option>
                                 <option value=5>Sekretaris Departemen</option>
                                 <option value=6>Sekretaris Program Studi</option>
+                                <option value=7>Bendahara</option>
                               </select>
                           </div>
                         </div>

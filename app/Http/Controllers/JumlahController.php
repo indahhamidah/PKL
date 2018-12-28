@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Jumlah;
+use App\RedaksiJumlah;
 use App\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -82,9 +83,13 @@ class JumlahController extends Controller
         $listdept=DB::table('departemen')
                     // ->orderBy('id_dept','desc')
                     ->get();
+         $redaksiJumlah = RedaksiJumlah::join('departemen', 'id_dept', '=', 'id_departemen')
+                        ->where('id_departemen', $id_departemen)
+                        ->select('redaksi_jumlah', 'id_redaksiJum', 'id_departemen')
+                        ->get();
      // dd($dept[0]->nama_departemen);
 // dd($jumlahs[0]->nama_departemen);
-        return view('jumlah/index2',compact('jumlahs', 'totaljumlah', 'listtahun', 'listdept', 'totaldayatam', 'totalikut', 'totallulus','dept'));
+        return view('jumlah/index2',compact('jumlahs', 'totaljumlah', 'listtahun', 'listdept', 'totaldayatam', 'totalikut', 'totallulus','dept', 'redaksiJumlah'));
 
     }
 
@@ -675,8 +680,12 @@ class JumlahController extends Controller
                         ->where('id_departemen', $id_departemen)
                         ->orderBy('tahun', 'desc')
                         ->get();
+             $redaksiJumlah = RedaksiJumlah::join('departemen', 'id_dept', '=', 'id_departemen')
+                        ->where('id_departemen', $id_departemen)
+                        ->select('redaksi_jumlah', 'id_redaksiJum', 'id_departemen')
+                        ->get();
         // dd($date1);
-        $pdf = PDF::loadView('jumlah.pdf', compact('jumlahs','jumlh'));
+        $pdf = PDF::loadView('jumlah.pdf', compact('jumlahs','jumlh', 'redaksiJumlah'));
         $pdf ->setPaper('a4', 'potrait');
         return $pdf->stream();
 
@@ -690,7 +699,11 @@ class JumlahController extends Controller
                         ->join('departemen', 'id_dept', '=', 'id_departemen')
                         ->where('id_departemen', $id_departemen)
                         ->get();
-        $pdf = PDF::loadView('jumlah.pdfm', compact('jumlahs'));
+         $redaksiJumlah = RedaksiJumlah::join('departemen', 'id_dept', '=', 'id_departemen')
+                        ->where('id_departemen', $id_departemen)
+                        ->select('redaksi_jumlah', 'id_redaksiJum', 'id_departemen')
+                        ->get();
+        $pdf = PDF::loadView('jumlah.pdfm', compact('jumlahs', 'redaksiJumlah'));
         $pdf ->setPaper('a4', 'potrait');
         return $pdf->stream();
         // return view('jumlah.pdf', compact('jumlahs'));

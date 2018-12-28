@@ -3,7 +3,7 @@
   <meta charset="utf-8">
   <title>Tabel 3.1 Jumlah Mahasiswa FMIPA</title>
 </head>
-<table cellspacing="0">
+        <table cellspacing="0">
            <tr>
             <th colspan="1" align=left valign=top><font face="Times New Rowman" ></font></th>
              <th colspan="12" style="text-align: left"><font face="Times New Rowman" ><strong>Tabel 3.1</strong> Jumlah Mahasiswa FMIPA tahun akademik <?php echo Carbon::now()->startOfYear()->subYear(1)->format('Y') ?>/<?php echo Carbon::now()->startOfYear()->format('Y') ?> menurut Tipe Program dan Jenis Mahasiswa per Program Studi</font></th>
@@ -156,5 +156,9 @@
             <th colspan="1" align="center" style="border:1px solid #000; border-width: thin; background-color:#daeef3;"><font face="Times New Rowman" ><?php echo DB::table('jumlahs')->whereYear( 'tahun',date('Y'))->sum(DB::raw('mbt_reguler + mt_reguler + total_reguler + mbt_nonreguler + mt_nonreguler + total_nonreguler')) ?></font></th>
             </tr>
     </table>
+
+    @foreach ($redaksiJumlah as $redaksijum)
+            {!! $redaksijum->redaksi_jumlah!!}
+            @endforeach
   </body>
 </html>

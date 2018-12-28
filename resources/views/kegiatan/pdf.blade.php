@@ -43,4 +43,7 @@
         
 
 </table>
+            @foreach ($redaksiKegiatan as $redaksikeg)
+            {!! $redaksikeg->redaksinya!!}
+            @endforeach
 </body>

@@ -15,7 +15,7 @@
             <div class="box-header">
            <!-- Button trigger modal -->
             @if(Auth::User()->id_departemen!=10)
-            @if(Auth::User()->role!=2)
+            @if(Auth::User()->role!=2 and Auth::User()->role!=14)
             <button type="button" class="btn btn-primary pull-left" style="margin-right: 10px" data-toggle="modal" data-target="#modal-default">
             <i class="fa fa-plus"></i> <span>Tambah</span>
             </button>
@@ -25,6 +25,8 @@
             <button type="button" class="btn btn-primary pull-left" style="margin-right: 10px" data-toggle="modal" data-target="#modal">
             <i class="fa fa-download"></i> <span>Download</span>
             </button>
+            <a href="/redaksikegiatan" class="btn btn-primary pull-left" role="button">
+                  <i class="fa fa-file-text"></i> Redaksi</a>
             @else
             <button type="button" class="btn btn-primary pull-left" style="margin-right: 10px" data-toggle="modal" data-target="#modal">
             <i class="fa fa-download"></i> <span> Download</span>
@@ -32,8 +34,15 @@
             @endif
             @endif
             @if(Auth::User()->id_departemen==10)
+            @if(Auth::User()->role!=1 and Auth::User()->role!=14)
             <a href="{{ route('kegiatan.kegiatanexcel') }}" class="btn btn-primary"><i class="fa fa-download"></i><strong> .xls</strong></a>
             <a href="{{ route('kegiatan.downloadkegiatan') }}" class="btn btn-primary"><i class="fa fa-download"></i><strong>.pdf</strong></a>
+            <a href="/redaksikegiatan" class="btn btn-primary " role="button">
+                  <i class="fa fa-file-text"></i> Redaksi</a>
+              @else
+              <a href="{{ route('kegiatan.kegiatanexcel') }}" class="btn btn-primary"><i class="fa fa-download"></i><strong> .xls</strong></a>
+            <a href="{{ route('kegiatan.downloadkegiatan') }}" class="btn btn-primary"><i class="fa fa-download"></i><strong>.pdf</strong></a>
+            @endif
             @endif
              <!-- Cari -->
               <div class="col-md-offset-10">
@@ -77,7 +86,7 @@
                     <th>Penyelenggara</th>
                     <th width="30px">Tahun</th>
                     @if(Auth::user()->id_departemen!=10)
-                    @if(Auth::user()->role!=2)
+                    @if(Auth::user()->role!=2 and Auth::User()->role!=14)
                     <th width="100px">Actions</th>
                     @endif
                     @endif
@@ -93,7 +102,7 @@
                   <td><p style="font-size:16px">{{$kegiatan->penyelenggara}}</p></td>
                   <td><p style="font-size:16px">{{$kegiatan->tahun_kegiatan}}</p></td>
                   @if(Auth::user()->id_departemen!=10)
-                  @if(Auth::user()->role!=2)
+                  @if(Auth::user()->role!=2 and Auth::User()->role!=14)
                   <td>
                     <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal-default{{$kegiatan->id_kegiatan}}">
                     <span>Ubah</span>

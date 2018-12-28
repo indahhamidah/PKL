@@ -12,4 +12,8 @@ class Departemen extends Model
         'id_penelitian', 'id_pengabdian', 'id_prestasi', 'id_sarana_tambahan', 'id_hardware', 'id_si', 'id_kerjasama',
         'id_tenaga_kependidikan', 'id_penggantian_dosen', 'id_perencanaan_dosen','id_perencanaan_tkpd'
     ];
+
+    public function penggunaanDana(){
+    	return $this->hasMany('App\PenggunaanDana', 'id_departemen', 'id_dept');
+    }
 }

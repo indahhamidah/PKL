@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->  
-    <link rel="icon" type="image/png" href="{{asset('Login_v19/images/icons/favicon.ico')}}">
+    <link rel="icon" type="image/png" href="{{asset('Admin/dist/img/logo-ipb.png')}}">
 <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="{{asset('Login_v19/vendor/bootstrap/css/bootstrap.min.css')}}">
 <!--===============================================================================================-->

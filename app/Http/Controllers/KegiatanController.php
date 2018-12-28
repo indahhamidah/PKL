@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Kegiatan;
+use App\RedaksiKegiatan;
 use App\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -39,8 +40,12 @@ class KegiatanController extends Controller
               ->orderBy('tahun_kegiatan','desc')
               ->get();
         }
+         $redaksiKegiatan = RedaksiKegiatan::join('departemen', 'id_dept', '=', 'id_departemen')
+                        ->where('id_departemen', $id_departemen)
+                        ->select('redaksinya', 'id_redaksiKeg', 'id_departemen')
+                        ->get();
         $dept=DB::table('departemen')->where('id_dept', $id_departemen)->get();
-        return view('kegiatan/index',compact('kegiatan','dept'))
+        return view('kegiatan/index',compact('kegiatan','dept', 'redaksiKegiatan'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
@@ -238,7 +243,11 @@ public function kegiatanExport(Request $request)
                         ->where('id_departemen', $id_departemen)
                         ->orderBy('tahun_kegiatan', 'desc')
                         ->get();
-        $pdf = PDF::loadView('kegiatan.pdf', compact('kegiatans','keg'));
+          $redaksiKegiatan = RedaksiKegiatan::join('departemen', 'id_dept', '=', 'id_departemen')
+                        ->where('id_departemen', $id_departemen)
+                        ->select('redaksinya', 'id_redaksiKeg', 'id_departemen')
+                        ->get();
+        $pdf = PDF::loadView('kegiatan.pdf', compact('kegiatans','keg', 'redaksiKegiatan'));
         $pdf ->setPaper('a4', 'potrait');
         return $pdf->stream();
         // return view('jumlah.pdf', compact('jumlahs'));
@@ -251,7 +260,11 @@ public function downloadkegiatan(Request $request)
         $kegiatans = Kegiatan::whereBetween('tahun_kegiatan', [$date1,$date2])
                         ->orderBy('tahun_kegiatan', 'desc')
                         ->get();
-        $pdf = PDF::loadView('kegiatan.pdfm', compact('kegiatans'));
+         $redaksiKegiatan = RedaksiKegiatan::join('departemen', 'id_dept', '=', 'id_departemen')
+                        ->where('id_departemen', $id_departemen)
+                        ->select('redaksinya', 'id_redaksiKeg', 'id_departemen')
+                        ->get();
+        $pdf = PDF::loadView('kegiatan.pdfm', compact('kegiatans', 'redaksiKegiatan'));
         $pdf ->setPaper('a4', 'potrait');
         return $pdf->stream();
         // return view('jumlah.pdf', compact('jumlahs'));

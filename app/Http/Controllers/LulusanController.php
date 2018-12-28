@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Lulusan;
+use App\RedaksiLulusan;
 use App\User;
 use App\Departemen;
 use Illuminate\Support\Facades\DB;
@@ -85,10 +86,14 @@ class LulusanController extends Controller
         $listdept=DB::table('departemen')
                     ->get();
          $dept=DB::table('departemen')->where('id_dept', $id_departemen)->get();
+         $redaksiLulusan = RedaksiLulusan::join('departemen', 'id_dept', '=', 'id_departemen')
+                        ->where('id_departemen', $id_departemen)
+                        ->select('redaksi_lulusan', 'id_redaksiLus', 'id_departemen')
+                        ->get();
         //dd($idDept);
      // dd($lastdate);
                     // dd($tgl);
-        return view('lulusan/index',compact('lulusans','ratabulan','ratatahun','rataipk', 'listdept', 'beda','ratabulan2', 'lastdate','thn1','thn2','thn3','rata_bln','rata_thn','rata_ipk','thn4','dept'));
+        return view('lulusan/index',compact('lulusans','ratabulan','ratatahun','rataipk', 'listdept', 'beda','ratabulan2', 'lastdate','thn1','thn2','thn3','rata_bln','rata_thn','rata_ipk','thn4','dept', 'redaksiLulusan'));
             // ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
@@ -672,6 +677,10 @@ public function lulusanDownload(Request $request)
                         ->where('id_departemen', $id_departemen)
                         ->where('id','=',Auth::user()->id)
                         ->get();
+        $redaksiLulusan = RedaksiLulusan::join('departemen', 'id_dept', '=', 'id_departemen')
+                        ->where('id_departemen', $id_departemen)
+                        ->select('redaksi_lulusan', 'id_redaksiLus', 'id_departemen')
+                        ->get();
         //TS-4
         $dateS = Carbon::now()->startOfYear()->subYear(4)->subMonth(4);
         $dateE = Carbon::now()->startOfYear()->subYear(3)->subMonth(4);
@@ -858,7 +867,7 @@ public function lulusanDownload(Request $request)
         // dd($rata_min_ts);
         // dd($lulusan);
         // var_dump($rata_min);
-        $pdf = PDF::loadView('lulusan/pdf', compact('lulusan', 'min0', 'min1','min2','min3','min4','avg0', 'avg1','avg2','avg3','avg4','max0', 'max1','max2','max3','max4','rata_min','rata_avg','rata_max','ts','ts1','ts2','ts3','ts4','ts5','rata_min_ts','mints','min11','min_ts2','min_ts3','min_ts4','tengahts','tengah_ts1','tengah_ts2','tengah_ts3','tengah_ts4','maxts','max_ts1','max_ts2','max_ts3','max_ts4','total_jml','total_jml_ts1','jum_ts2','jum_ts3','jum_ts4'));
+        $pdf = PDF::loadView('lulusan/pdf', compact('lulusan', 'min0', 'min1','min2','min3','min4','avg0', 'avg1','avg2','avg3','avg4','max0', 'max1','max2','max3','max4','rata_min','rata_avg','rata_max','ts','ts1','ts2','ts3','ts4','ts5','rata_min_ts','mints','min11','min_ts2','min_ts3','min_ts4','tengahts','tengah_ts1','tengah_ts2','tengah_ts3','tengah_ts4','maxts','max_ts1','max_ts2','max_ts3','max_ts4','total_jml','total_jml_ts1','jum_ts2','jum_ts3','jum_ts4', 'redaksiLulusan'));
         $pdf ->setPaper('a4', 'potrait');
         return $pdf->stream();
     }

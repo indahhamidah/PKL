@@ -91,6 +91,9 @@
                   <th></th>
                   </tr> 
 </table>
+          @foreach ($redaksiLulusan as $redaksilus)
+            {!! $redaksilus->redaksi_lulusan!!}
+            @endforeach
  
 </body>
 </html>

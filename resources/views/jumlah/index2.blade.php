@@ -22,7 +22,7 @@ table, th, td{
             <div class="box-header">
             <!-- /.box-header -->
              @if(Auth::User()->id_departemen!=10)
-             @if(Auth::User()->role!=2)
+             @if(Auth::User()->role!=2 and Auth::User()->role!=14)
               <button type="button" class="btn btn-primary pull-left" style="margin-right: 10px" data-toggle="modal" data-target="#modal-default">
                 <i class="fa fa-plus"></i> <span>Tambah</span>
               </button>
@@ -33,18 +33,33 @@ table, th, td{
                <button type="button" class="btn btn-primary pull-left" style="margin-right: 10px" data-toggle="modal" data-target="#modal">
                 <i class="fa fa-download"></i> <span>Download</span>
               </button>
-              @elseif(Auth::User()->role==2)
+              <a href="/redaksijumlah" class="btn btn-primary pull-left" role="button">
+                  <i class="fa fa-file-text"></i> Redaksi</a>
+              @elseif(Auth::User()->role==2 or Auth::User()->role==14)
               <button type="button" class="btn btn-primary pull-left" style="margin-right: 10px" data-toggle="modal" data-target="#modal">
                 <i class="fa fa-download"></i> <span>Download</span>
               </button>
+
               @endif
-              @else
+               @elseif(Auth::User()->id_departemen==10)
+                @if(Auth::User()->role!=1 and Auth::User()->role!=14)
               <a href="{{ route('jumlah.jumlahexcel') }}" class="btn btn-primary btn-md">
               <i class="fa fa-download"> .xls</i>
               </a>
               <a href="{{ route('jumlah.downloadm')}}" class="btn btn-primary btn-md">
               <i class="fa fa-download"> .pdf</i>
               </a>
+              <a href="/redaksijumlah" class="btn btn-primary btn-md">
+                  <i class="fa fa-file-text"></i> Redaksi</a>
+                  @else
+              <a href="{{ route('jumlah.jumlahexcel') }}" class="btn btn-primary btn-md">
+              <i class="fa fa-download"> .xls</i>
+              </a>
+              <a href="{{ route('jumlah.downloadm')}}" class="btn btn-primary btn-md">
+              <i class="fa fa-download"> .pdf</i>
+              </a>
+
+              @endif
 
                 <!-- cari Departemen -->
               <form id="id_jumlah" class="form-horizontal" role="form" method="POST" action="{{ 'cari' }}">
@@ -156,7 +171,7 @@ table, th, td{
                   @if(Auth::user()->id_departemen==10)
                   <th style="text-align: center">Departemen</th>
                   @elseif(Auth::user()->id_departemen!=10)
-                  @if(Auth::User()->role!=2)
+                  @if(Auth::User()->role!=2 and Auth::User()->role!=14)
                   <th style="text-align: center">Actions</th>
                   @endif
                   @endif
@@ -182,7 +197,7 @@ table, th, td{
                   @if(Auth::user()->id_departemen==10)
                   <td>{{$jumlah->nama_departemen}}</td>
                   @elseif(Auth::user()->id_departemen!=10)
-                  @if(Auth::User()->role!=2)
+                  @if(Auth::User()->role!=2 and Auth::User()->role!=14)
                   <td>
                     <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal-default{{$jumlah->id_jumlah}}">
                     <span>Ubah</span>

@@ -166,6 +166,8 @@ return [
         Collective\Html\HtmlServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
+        // Unisharp\Laravelfilemanager\LaravelFilemanagerServiceProvider::class,
+        // Interventation\Image\ImageServiceProvider::class,
         // Codedge\Fpdf\FpdfServiceProvider::class,
 
 
@@ -238,6 +240,7 @@ return [
         'PDF' => Barryvdh\DomPDF\Facade::class,
         // 'Fpdf' => Codedge\Fpdf\Facades\Fpdf::class,
         'Rule'=>Illuminate\Validation\Rule::class,
+        'image'=>Interventation\Image\Facades\Image::class,
     ],
 
 ];
